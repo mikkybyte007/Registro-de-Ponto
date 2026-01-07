@@ -1,21 +1,21 @@
-    {
-      "name": "Controle de Ponto Pessoal",
-      "short_name": "Meu Ponto",
-      "description": "Aplicação pessoal para controle de ponto e banco de horas.",
-      "start_url": "/Registro-de-Ponto/index.html",
-      "display": "standalone",
-      "background_color": "#f0f2f5",
-      "theme_color": "#007aff",
-      "icons": [
         {
-          "src": "/Registro-de-Ponto/icon-192x192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        },
-        {
-          "src": "/Registro-de-Ponto/icon-512x512.png",
-          "sizes": "512x512",
-          "type": "image/png"
+          "name": "Controle de Ponto Pessoal",
+          "short_name": "Meu Ponto",
+          "description": "Aplicação pessoal para controle de ponto e banco de horas.",
+          "start_url": "/Registro-de-Ponto/index.html",
+          "display": "standalone",
+          "background_color": "#f0f2f5",
+          "theme_color": "#007aff",
+          "icons": [
+            {
+              "src": "/Registro-de-Ponto/icon-192x192.png",
+              "sizes": "192x192",
+              "type": "image/png"
+            },
+            {
+              "src": "/Registro-de-Ponto/icon-512x512.png",
+              "sizes": "512x512",
+              "type": "image/png"
+            }
+          ]
         }
-      ]
-    }
