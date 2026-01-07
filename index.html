@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Ponto Pessoal - Miquéias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color-light: #f0f2f5;
+            --text-color-light: #333;
+            --card-bg-light: #ffffff;
+            --border-color-light: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+
+            --bg-color-dark: #1e1e1e;
+            --text-color-dark: #f0f0f0;
+            --card-bg-dark: #2a2a2a;
+            --border-color-dark: #3a3a3a;
+            --shadow-dark: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 15px; /* Reduz padding para telas menores */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .container {
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            padding: 20px; /* Reduz padding para telas menores */
+            width: 100%;
+            max-width: 600px; /* Ajusta max-width para melhor visualização em mobile */
+            margin-bottom: 15px; /* Reduz margin-bottom */
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .container {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color-light);
+            margin-bottom: 20px; /* Reduz margin-bottom */
+            font-size: 1.8rem; /* Ajusta tamanho da fonte para mobile */
+        }
+
+        body.dark-mode h1 {
+            color: var(--text-color-dark);
+        }
+
+        h2 {
+            font-size: 1.4rem; /* Ajusta tamanho da fonte para mobile */
+        }
+
+        .form-group {
+            margin-bottom: 10px; /* Reduz margin-bottom */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-color-light);
+            font-size: 0.95rem; /* Ajusta tamanho da fonte */
+        }
+
+        body.dark-mode .form-group label {
+            color: var(--text-color-dark);
+        }
+
+        .form-group input[type="date"],
+        .form-group input[type="time"] {
+            padding: 10px; /* Ajusta padding */
+            border: 1px solid var(--border-color-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: var(--card-bg-light);
+            color: var(--text-color-light);
+            transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+            -webkit-appearance: none; /* Remove estilo padrão de input em iOS */
+        }
+
+        body.dark-mode .form-group input {
+            background-color: var(--bg-color-dark);
+            border-color: var(--border-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column; /* Botões empilhados em mobile */
+            gap: 10px;
+            margin-top: 15px; /* Reduz margin-top */
+            justify-content: center;
+        }
+
+        @media (min-width: 480px) { /* A partir de telas um pouco maiores, volta a ser linha */
+            .button-group {
+                flex-direction: row;
+            }
+        }
+
+        button {
+            padding: 12px 20px; /* Aumenta padding para facilitar o toque */
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s, box-shadow 0.2s;
+            font-weight: 500;
+            width: 100%; /* Ocupa largura total em mobile */
+        }
+
+        @media (min-width: 480px) {
+            button {
+                width: auto; /* Volta a largura automática em telas maiores */
+            }
+        }
+
+        button.primary {
+            background-color: #007aff;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.2);
+        }
+
+        button.primary:hover {
+            background-color: #005bb5;
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+        }
+
+        button.secondary {
+            background-color: var(--border-color-light);
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode button.secondary {
+            background-color: var(--border-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        button.secondary:hover {
+            opacity: 0.8;
+        }
+
+        #data-entries {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        #data-entries h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode #data-entries h2 {
+            color: var(--text-color-dark);
+        }
+
+        .entry-card {
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color-light);
+            border-radius: 10px;
+            padding: 12px; /* Reduz padding */
+            margin-bottom: 8px; /* Reduz margin-bottom */
+            display: flex;
+            flex-direction: column; /* Empilha informações em mobile */
+            justify-content: space-between;
+            align-items: flex-start; /* Alinha ao início */
+            box-shadow: 0 2px 8px var(--shadow-light);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .entry-card {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+            box-shadow: 0 2px 8px var(--shadow-dark);
+        }
+
+        .entry-info {
+            flex-grow: 1;
+            color: var(--text-color-light);
+            font-size: 0.9rem; /* Ajusta tamanho da fonte */
+            margin-bottom: 10px; /* Espaçamento entre info e ações */
+        }
+
+        body.dark-mode .entry-info {
+            color: var(--text-color-dark);
+        }
+
+        .entry-info strong {
+            font-weight: 600;
+        }
+
+        .entry-actions {
+            width: 100%; /* Ocupa largura total */
+            text-align: right; /* Alinha botão de lixeira à direita */
+        }
+
+        .entry-actions button {
+            background: none;
+            border: none;
+            color: #ff3b30;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            border-radius: 5px;
+            width: auto; /* Botão de lixeira não ocupa largura total */
+        }
+
+        .entry-actions button:hover {
+            background-color: rgba(255, 59, 48, 0.1);
+        }
+
+        .theme-toggle {
+            position: static; /* Remove posicionamento absoluto em mobile */
+            margin-bottom: 20px; /* Adiciona margem abaixo */
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color-light);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-color-light);
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            width: 100%;
+            max-width: 600px; /* Alinha com os containers */
+            text-align: center;
+        }
+
+        body.dark-mode .theme-toggle {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.9;
+        }
+
+        @media (min-width: 768px) { /* Para tablets e desktops, volta ao posicionamento original */
+            .theme-toggle {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: auto;
+                max-width: none;
+            }
+            .entry-card {
+                flex-direction: row; /* Volta a ser linha */
+                align-items: center;
+            }
+            .entry-info {
+                margin-bottom: 0;
+            }
+            .entry-actions {
+                width: auto;
+            }
+        }
+
+        #summary {
+            margin-top: 20px;
+            padding: 15px; /* Reduz padding */
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border-color-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode #summary {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #summary p {
+            margin: 5px 0;
+            font-size: 1rem; /* Ajusta tamanho da fonte */
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode #summary p {
+            color: var(--text-color-dark);
+        }
+
+        #summary strong {
+            font-weight: 600;
+        }
+
+        .positive-balance {
+            color: #34c759;
+        }
+
+        .negative-balance {
+            color: #ff3b30;
+        }
+    </style>
+    <!-- SheetJS (XLSX) library for Excel generation -->
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle">Modo Escuro</button>
+
+    <div class="container">
+        <h1>Controle de Ponto Pessoal</h1>
+        <div class="form-group">
+            <label for="data">Data:</label>
+            <input type="date" id="data" required>
+        </div>
+        <div class="form-group">
+            <label for="entrada">Entrada Real (HH:MM):</label>
+            <input type="time" id="entrada" value="06:00" required>
+        </div>
+        <div class="form-group">
+            <label for="saida">Saída Real (HH:MM):</label>
+            <input type="time" id="saida" value="12:00" required>
+        </div>
+        <div class="button-group">
+            <button class="primary" id="add-entry">Adicionar Ponto</button>
+            <button class="secondary" id="clear-entries">Limpar Tudo</button>
+        </div>
+    </div>
+
+    <div class="container" id="data-entries">
+        <h2>Registros de Ponto</h2>
+        <div id="entries-list">
+            <!-- Entries will be added here -->
+        </div>
+        <div class="button-group">
+            <button class="primary" id="generate-excel">Gerar Excel</button>
+        </div>
+    </div>
+
+    <div class="container" id="summary">
+        <h2>Resumo do Banco de Horas</h2>
+        <p>Saldo Acumulado: <strong id="total-bank-hours">00:00</strong></p>
+    </div>
+
+    <script>
+        const dataInput = document.getElementById('data');
+        const entradaInput = document.getElementById('entrada');
+        const saidaInput = document.getElementById('saida');
+        const addEntryBtn = document.getElementById('add-entry');
+        const clearEntriesBtn = document.getElementById('clear-entries');
+        const generateExcelBtn = document.getElementById('generate-excel');
+        const entriesList = document.getElementById('entries-list');
+        const totalBankHoursSpan = document.getElementById('total-bank-hours');
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Horários previstos
+        const ENTRADA_PREVISTA = '06:00';
+        const SAIDA_PREVISTA = '12:00';
+        const TOLERANCIA_MINUTOS = 10; // 10 minutos
+
+        let entries = []; // Array para armazenar os registros de ponto
+
+        // --- Funções de Utilitário de Tempo ---
+        function timeToMinutes(timeStr) {
+            if (!timeStr) return 0; // Lida com strings vazias
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        function minutesToTime(totalMinutes) {
+            const sign = totalMinutes < 0 ? '-' : '';
+            totalMinutes = Math.abs(totalMinutes);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+
+        function calculateTimeDifference(start, end) {
+            const startMinutes = timeToMinutes(start);
+            const endMinutes = timeToMinutes(end);
+            return endMinutes - startMinutes;
+        }
+
+        // --- Lógica de Cálculo de Ponto ---
+        function calculateDailyPoint(data, entradaReal, saidaReal) {
+            const entradaPrevistaMin = timeToMinutes(ENTRADA_PREVISTA); // 360 (06:00)
+            const saidaPrevistaMin = timeToMinutes(SAIDA_PREVISTA);     // 720 (12:00)
+
+            const entradaRealMin = timeToMinutes(entradaReal);
+            const saidaRealMin = timeToMinutes(saidaReal);
+
+            let horasTrabalhadasDiaMin = 0;
+            let horasDevidasExtrasDiaMin = 0;
+
+            // --- Cálculo da Entrada ---
+            if (entradaReal) { // Só calcula se houver entrada real
+                if (entradaRealMin < (entradaPrevistaMin - TOLERANCIA_MINUTOS)) {
+                    // Entrada antes de 05:50 (ex: 05:49 ou antes)
+                    horasDevidasExtrasDiaMin += (entradaPrevistaMin - entradaRealMin); // Horas extras
+                } else if (entradaRealMin > entradaPrevistaMin) {
+                    // Entrada depois de 06:00 (ex: 06:01 ou depois)
+                    horasDevidasExtrasDiaMin -= (entradaRealMin - entradaPrevistaMin); // Horas negativas
+                }
+                // Se entrada entre 05:50 e 06:00, não há impacto no banco de horas (tolerância)
+            }
+
+
+            // --- Cálculo da Saída ---
+            if (saidaReal) { // Só calcula se houver saída real
+                if (saidaRealMin > (saidaPrevistaMin + TOLERANCIA_MINUTOS)) {
+                    // Saída depois de 12:10 (ex: 12:11 ou depois)
+                    horasDevidasExtrasDiaMin += (saidaRealMin - saidaPrevistaMin); // Horas extras
+                } else if (saidaRealMin < saidaPrevistaMin) {
+                    // Saída antes de 12:00 (ex: 11:59 ou antes)
+                    horasDevidasExtrasDiaMin -= (saidaPrevistaMin - saidaRealMin); // Horas negativas
+                }
+                // Se saída entre 12:00 e 12:10, não há impacto no banco de horas (tolerância)
+            }
+
+            // Horas trabalhadas no dia: tempo real entre entrada e saída
+            if (entradaReal && saidaReal) {
+                horasTrabalhadasDiaMin = calculateTimeDifference(entradaReal, saidaReal);
+            }
+
+
+            return {
+                horasTrabalhadasDia: minutesToTime(horasTrabalhadasDiaMin),
+                horasDevidasExtrasDia: minutesToTime(horasDevidasExtrasDiaMin)
+            };
+        }
+
+        // --- Gerenciamento de Dados e UI ---
+        function loadEntries() {
+            const storedEntries = localStorage.getItem('pointEntries');
+            if (storedEntries) {
+                entries = JSON.parse(storedEntries);
+                renderEntries();
+            }
+        }
+
+        function saveEntries() {
+            localStorage.setItem('pointEntries', JSON.stringify(entries));
+        }
+
+        function renderEntries() {
+            entriesList.innerHTML = '';
+            let accumulatedBankHoursMin = 0;
+
+            // Ordena as entradas por data para garantir o cálculo correto do acumulado
+            entries.sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            entries.forEach((entry, index) => {
+                const { horasTrabalhadasDia, horasDevidasExtrasDia } = calculateDailyPoint(entry.data, entry.entradaReal, entry.saidaReal);
+                entry.horasTrabalhadasDia = horasTrabalhadasDia;
+                entry.horasDevidasExtrasDia = horasDevidasExtrasDia;
+
+                accumulatedBankHoursMin += timeToMinutes(horasDevidasExtrasDia);
+                entry.bancoHorasAcumulado = minutesToTime(accumulatedBankHoursMin);
+
+                const entryCard = document.createElement('div');
+                entryCard.classList.add('entry-card');
+                entryCard.innerHTML = `
+                    <div class="entry-info">
+                        <strong>Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}<br>
+                        <strong>Entrada:</strong> ${entry.entradaReal} | <strong>Saída:</strong> ${entry.saidaReal}<br>
+                        <strong>Trabalhadas:</strong> ${entry.horasTrabalhadasDia} | <strong>Banco Dia:</strong> ${entry.horasDevidasExtrasDia}<br>
+                        <strong>Banco Acumulado:</strong> <span class="${accumulatedBankHoursMin < 0 ? 'negative-balance' : 'positive-balance'}">${entry.bancoHorasAcumulado}</span>
+                    </div>
+                    <div class="entry-actions">
+                        <button data-index="${index}">🗑️</button>
+                    </div>
+                `;
+                entriesList.appendChild(entryCard);
+            });
+
+            totalBankHoursSpan.textContent = minutesToTime(accumulatedBankHoursMin);
+            totalBankHoursSpan.className = accumulatedBankHoursMin < 0 ? 'negative-balance' : 'positive-balance';
+            saveEntries(); // Salva após recalcular e renderizar
+        }
+
+        function addEntry() {
+            const data = dataInput.value;
+            const entrada = entradaInput.value;
+            const saida = saidaInput.value;
+
+            if (!data || !entrada || !saida) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            const newEntry = {
+                data: data,
+                entradaPrevista: ENTRADA_PREVISTA,
+                saidaPrevista: SAIDA_PREVISTA,
+                entradaReal: entrada,
+                saidaReal: saida,
+                horasTrabalhadasDia: '', // Será calculado em renderEntries
+                horasDevidasExtrasDia: '', // Será calculado em renderEntries
+                bancoHorasAcumulado: '' // Será calculado em renderEntries
+            };
+
+            entries.push(newEntry);
+            renderEntries();
+            // Opcional: Limpa os campos de entrada, exceto a data para facilitar entradas sequenciais
+            // entradaInput.value = ENTRADA_PREVISTA;
+            // saidaInput.value = SAIDA_PREVISTA;
+        }
+
+        function deleteEntry(index) {
+            if (confirm('Tem certeza que deseja remover este registro?')) {
+                entries.splice(index, 1);
+                renderEntries();
+            }
+        }
+
+        function clearAllEntries() {
+            if (confirm('Tem certeza que deseja limpar TODOS os registros? Esta ação é irreversível.')) {
+                entries = [];
+                renderEntries();
+                localStorage.removeItem('pointEntries');
+            }
+        }
+
+        // --- Geração de Excel ---
+        function generateExcel() {
+            if (entries.length === 0) {
+                alert('Não há registros para gerar o Excel.');
+                return;
+            }
+
+            // Prepara os dados para o Excel
+            const dataForExcel = entries.map(entry => ({
+                'Data': new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR'),
+                'Entrada Prevista': entry.entradaPrevista,
+                'Saída Prevista': entry.saidaPrevista,
+                'Entrada Real': entry.entradaReal,
+                'Saída Real': entry.saidaReal,
+                'Horas Trabalhadas (Dia)': entry.horasTrabalhadasDia,
+                'Horas Devidas/Extras (Dia)': entry.horasDevidasExtrasDia,
+                'Banco de Horas Acumulado': entry.bancoHorasAcumulado
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(dataForExcel);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Controle de Ponto");
+
+            // Define o nome do arquivo com o período (21 do mês anterior ao 20 do mês atual)
+            const today = new Date();
+            const currentDay = today.getDate();
+            let startMonth, startYear, endMonth, endYear;
+
+            if (currentDay > 20) {
+                // Se estamos entre o dia 21 e o final do mês, o ciclo atual começou no dia 21 deste mês
+                startMonth = today.getMonth();
+                startYear = today.getFullYear();
+                endMonth = (startMonth + 1) % 12;
+                endYear = (endMonth === 0) ? startYear + 1 : startYear;
+            } else {
+                // Se estamos entre o dia 1 e 20, o ciclo atual começou no dia 21 do mês anterior
+                endMonth = today.getMonth();
+                endYear = today.getFullYear();
+                startMonth = (endMonth === 0) ? 11 : endMonth - 1;
+                startYear = (endMonth === 0) ? endYear - 1 : endYear;
+            }
+
+            const startDate = new Date(startYear, startMonth, 21);
+            const endDate = new Date(endYear, endMonth, 20);
+
+            const fileName = `Controle_Ponto_${startDate.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).replace(/\s/g, '_')}_a_${endDate.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).replace(/\s/g, '_')}.xlsx`;
+
+            XLSX.writeFile(wb, fileName);
+        }
+
+        // --- Gerenciamento de Tema (Claro/Escuro) ---
+        function applyTheme(isDarkMode) {
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = 'Modo Claro';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggle.textContent = 'Modo Escuro';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function toggleTheme() {
+            const isDarkMode = body.classList.contains('dark-mode');
+            applyTheme(!isDarkMode);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            // Como você prefere o tema claro como padrão, vamos garantir isso.
+            if (savedTheme === 'dark') {
+                applyTheme(true);
+            } else {
+                applyTheme(false); // Padrão para claro
+            }
+        }
+
+        // --- Event Listeners ---
+        addEntryBtn.addEventListener('click', addEntry);
+        clearEntriesBtn.addEventListener('click', clearAllEntries);
+        generateExcelBtn.addEventListener('click', generateExcel);
+        entriesList.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON' && event.target.dataset.index) {
+                deleteEntry(parseInt(event.target.dataset.index));
+            }
+        });
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Define a data atual como padrão no campo de data
+            dataInput.valueAsDate = new Date();
+            loadTheme();
+            loadEntries();
+        });
+    </script>
+</body>
+</html>
