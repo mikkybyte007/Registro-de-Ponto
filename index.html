@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Ponto Pessoal - Miquéias</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Adição para PWA: Link para o manifest.json -->
+    <link rel="manifest" href="/Registro-de-Ponto/manifest.json">
+    <!-- Adição para PWA: Ícone para iOS (Safari) -->
+    <link rel="apple-touch-icon" href="/Registro-de-Ponto/icon-192x192.png">
+    <!-- Você mencionou que tem o icon-512x512.png. É bom ter o 192x192 também para este caso. -->
+
     <style>
         :root {
             --bg-color-light: #f0f2f5;
@@ -18,6 +25,11 @@
             --card-bg-dark: #2a2a2a;
             --border-color-dark: #3a3a3a;
             --shadow-dark: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Adição: box-sizing para melhor controle de layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         body {
@@ -75,10 +87,11 @@
             margin-bottom: 10px; /* Reduz margin-bottom */
             display: flex;
             flex-direction: column;
+            gap: 5px; /* Adiciona espaçamento entre label e input */
         }
 
         .form-group label {
-            margin-bottom: 5px;
+            margin-bottom: 0; /* Removido, pois o gap já cuida */
             font-weight: 500;
             color: var(--text-color-light);
             font-size: 0.95rem; /* Ajusta tamanho da fonte */
@@ -98,6 +111,7 @@
             color: var(--text-color-light);
             transition: border-color 0.2s, background-color 0.2s, color 0.2s;
             -webkit-appearance: none; /* Remove estilo padrão de input em iOS */
+            min-width: 100px; /* Garante largura mínima para inputs de tempo no Safari */
         }
 
         body.dark-mode .form-group input {
@@ -208,6 +222,8 @@
             color: var(--text-color-light);
             font-size: 0.9rem; /* Ajusta tamanho da fonte */
             margin-bottom: 10px; /* Espaçamento entre info e ações */
+            line-height: 1.4; /* Melhora a legibilidade do texto */
+            word-break: break-word; /* Permite quebra de palavras longas */
         }
 
         body.dark-mode .entry-info {
@@ -330,7 +346,6 @@
 </head>
 <body>
     <button class="theme-toggle" id="theme-toggle">Modo Escuro</button>
-
     <div class="container">
         <h1>Controle de Ponto Pessoal</h1>
         <div class="form-group">
@@ -350,7 +365,6 @@
             <button class="secondary" id="clear-entries">Limpar Tudo</button>
         </div>
     </div>
-
     <div class="container" id="data-entries">
         <h2>Registros de Ponto</h2>
         <div id="entries-list">
@@ -360,12 +374,10 @@
             <button class="primary" id="generate-excel">Gerar Excel</button>
         </div>
     </div>
-
     <div class="container" id="summary">
         <h2>Resumo do Banco de Horas</h2>
         <p>Saldo Acumulado: <strong id="total-bank-hours">00:00</strong></p>
     </div>
-
     <script>
         const dataInput = document.getElementById('data');
         const entradaInput = document.getElementById('entrada');
@@ -410,7 +422,6 @@
         function calculateDailyPoint(data, entradaReal, saidaReal) {
             const entradaPrevistaMin = timeToMinutes(ENTRADA_PREVISTA); // 360 (06:00)
             const saidaPrevistaMin = timeToMinutes(SAIDA_PREVISTA);     // 720 (12:00)
-
             const entradaRealMin = timeToMinutes(entradaReal);
             const saidaRealMin = timeToMinutes(saidaReal);
 
@@ -429,7 +440,6 @@
                 // Se entrada entre 05:50 e 06:00, não há impacto no banco de horas (tolerância)
             }
 
-
             // --- Cálculo da Saída ---
             if (saidaReal) { // Só calcula se houver saída real
                 if (saidaRealMin > (saidaPrevistaMin + TOLERANCIA_MINUTOS)) {
@@ -446,7 +456,6 @@
             if (entradaReal && saidaReal) {
                 horasTrabalhadasDiaMin = calculateTimeDifference(entradaReal, saidaReal);
             }
-
 
             return {
                 horasTrabalhadasDia: minutesToTime(horasTrabalhadasDiaMin),
@@ -642,6 +651,19 @@
             loadTheme();
             loadEntries();
         });
+
+        // --- Registro do Service Worker (para PWA) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/Registro-de-Ponto/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado com sucesso:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Falha no registro do ServiceWorker:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
