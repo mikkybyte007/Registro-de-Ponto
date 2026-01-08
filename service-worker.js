@@ -3,7 +3,7 @@ const urlsToCache = [
     '/Registro-de-Ponto/', // A raiz do seu site
     '/Registro-de-Ponto/index.html',
     '/Registro-de-Ponto/manifest.json',
-    '/Registro-de-Ponto/icon-192x192.png', // Adicione o ícone de 192x192px aqui
+    '/Registro-de-Ponto/apple-touch-icon.png', // Adicionado para cache
     '/Registro-de-Ponto/icon-512x512.png',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap',
     'https://unpkg.com/xlsx/dist/xlsx.full.min.js'

@@ -8,8 +8,8 @@
   "theme_color": "#007aff",
   "icons": [
     {
-      "src": "/Registro-de-Ponto/icon-192x192.png",
-      "sizes": "192x192",
+      "src": "/Registro-de-Ponto/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     },
     {
