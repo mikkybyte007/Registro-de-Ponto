@@ -13,28 +13,34 @@
 
     <style>
         :root {
-            --bg-color-light: #f0f2f5;
-            --text-color-light: #333;
-            --card-bg-light: #ffffff;
-            --border-color-light: #e0e0e0;
-            --shadow-light: rgba(0, 0, 0, 0.08);
+            --bg-color-light: #f0f2f5; /* Fundo claro */
+            --text-color-light: #333; /* Texto escuro */
+            --card-bg-light: #ffffff; /* Fundo de card claro */
+            --border-color-light: #e0e0e0; /* Borda clara */
+            --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave clara */
 
-            --bg-color-dark: #1e1e1e;
-            --text-color-dark: #f0f0f0;
-            --card-bg-dark: #2a2a2a;
-            --border-color-dark: #3a3a3a;
-            --shadow-dark: rgba(0, 0, 0, 0.3);
-        }
+            --bg-color-dark: #1e1e1e; /* Fundo escuro */
+            --text-color-dark: #f0f0f0; /* Texto claro */
+            --card-bg-dark: #2a2a2a; /* Fundo de card escuro */
+            --border-color-dark: #3a3a3a; /* Borda escura */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Sombra suave escura */
 
-        /* Adição: box-sizing para melhor controle de layout */
-        *, *::before, *::after {
-            box-sizing: border-box;
+            /* Cores primárias e secundárias */
+            --primary-color: #007aff; /* Azul do iOS */
+            --primary-color-hover: #005bb5;
+            --secondary-color-light: #e9ecef; /* Cinza claro */
+            --secondary-color-dark: #4a4a4a; /* Cinza escuro */
+
+            /* Estilo macOS */
+            --macos-border-radius: 10px; /* Cantos mais arredondados */
+            --macos-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais sutil */
+            --macos-border: 1px solid rgba(0, 0, 0, 0.08); /* Borda discreta */
         }
 
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 15px; /* Reduz padding para telas menores */
+            padding: 20px; /* Aumenta padding para um visual mais espaçoso */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -42,6 +48,7 @@
             transition: background-color 0.3s, color 0.3s;
             background-color: var(--bg-color-light);
             color: var(--text-color-light);
+            line-height: 1.5; /* Melhora a legibilidade */
         }
 
         body.dark-mode {
@@ -51,27 +58,28 @@
 
         .container {
             background-color: var(--card-bg-light);
-            border: 1px solid var(--border-color-light);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px var(--shadow-light);
-            padding: 20px; /* Reduz padding para telas menores */
+            border: var(--macos-border); /* Borda macOS */
+            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
+            box-shadow: var(--macos-shadow); /* Sombra macOS */
+            padding: 25px; /* Aumenta padding */
             width: 100%;
-            max-width: 600px; /* Ajusta max-width para melhor visualização em mobile */
-            margin-bottom: 15px; /* Reduz margin-bottom */
+            max-width: 650px; /* Ajusta max-width para melhor visualização */
+            margin-bottom: 20px; /* Aumenta margin-bottom */
             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         body.dark-mode .container {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
-            box-shadow: 0 4px 12px var(--shadow-dark);
+            box-shadow: 0 2px 8px var(--shadow-dark); /* Sombra escura */
         }
 
         h1 {
             text-align: center;
             color: var(--text-color-light);
-            margin-bottom: 20px; /* Reduz margin-bottom */
-            font-size: 1.8rem; /* Ajusta tamanho da fonte para mobile */
+            margin-bottom: 25px; /* Aumenta margin-bottom */
+            font-size: 2rem; /* Ajusta tamanho da fonte */
+            font-weight: 600;
         }
 
         body.dark-mode h1 {
@@ -79,21 +87,22 @@
         }
 
         h2 {
-            font-size: 1.4rem; /* Ajusta tamanho da fonte para mobile */
+            font-size: 1.6rem; /* Ajusta tamanho da fonte */
+            margin-bottom: 15px;
+            font-weight: 500;
         }
 
         .form-group {
-            margin-bottom: 10px; /* Reduz margin-bottom */
+            margin-bottom: 15px; /* Aumenta margin-bottom */
             display: flex;
             flex-direction: column;
-            gap: 5px; /* Adiciona espaçamento entre label e input */
+            gap: 8px; /* Aumenta espaçamento entre label e input */
         }
 
         .form-group label {
-            margin-bottom: 0; /* Removido, pois o gap já cuida */
             font-weight: 500;
             color: var(--text-color-light);
-            font-size: 0.95rem; /* Ajusta tamanho da fonte */
+            font-size: 1rem; /* Ajusta tamanho da fonte */
         }
 
         body.dark-mode .form-group label {
@@ -102,16 +111,16 @@
 
         .form-group input[type="date"],
         .form-group input[type="time"],
-        .form-group input[type="number"] { /* Adicionado para inputs de número */
-            padding: 10px; /* Ajusta padding */
+        .form-group input[type="number"] { /* Adicionado input type number */
+            padding: 12px; /* Aumenta padding */
             border: 1px solid var(--border-color-light);
-            border-radius: 8px;
+            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
             font-size: 1rem;
             background-color: var(--card-bg-light);
             color: var(--text-color-light);
-            transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+            transition: border-color 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
             -webkit-appearance: none; /* Remove estilo padrão de input em iOS */
-            min-width: 100px; /* Garante largura mínima para inputs de tempo no Safari */
+            min-width: 120px; /* Garante largura mínima */
         }
 
         body.dark-mode .form-group input {
@@ -122,33 +131,34 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: #007aff;
-            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); /* Sombra de foco macOS */
         }
 
         .button-group {
             display: flex;
             flex-direction: column; /* Botões empilhados em mobile */
-            gap: 10px;
-            margin-top: 15px; /* Reduz margin-top */
+            gap: 12px; /* Aumenta gap */
+            margin-top: 20px; /* Aumenta margin-top */
             justify-content: center;
         }
 
-        @media (min-width: 480px) { /* A partir de telas um pouco maiores, volta a ser linha */
+        @media (min-width: 480px) {
             .button-group {
                 flex-direction: row;
             }
         }
 
         button {
-            padding: 12px 20px; /* Aumenta padding para facilitar o toque */
+            padding: 14px 22px; /* Aumenta padding */
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
+            font-size: 1.05rem;
             cursor: pointer;
             transition: background-color 0.2s, opacity 0.2s, box-shadow 0.2s;
             font-weight: 500;
             width: 100%; /* Ocupa largura total em mobile */
+            box-shadow: var(--macos-shadow); /* Sombra macOS */
         }
 
         @media (min-width: 480px) {
@@ -158,38 +168,40 @@
         }
 
         button.primary {
-            background-color: #007aff;
+            background-color: var(--primary-color);
             color: white;
             box-shadow: 0 2px 6px rgba(0, 122, 255, 0.2);
         }
 
         button.primary:hover {
-            background-color: #005bb5;
+            background-color: var(--primary-color-hover);
             box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
         }
 
         button.secondary {
-            background-color: var(--border-color-light);
+            background-color: var(--secondary-color-light);
             color: var(--text-color-light);
+            border: var(--macos-border); /* Borda macOS */
         }
 
         body.dark-mode button.secondary {
-            background-color: var(--border-color-dark);
+            background-color: var(--secondary-color-dark);
+            border-color: var(--border-color-dark);
             color: var(--text-color-dark);
         }
 
         button.secondary:hover {
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         #data-entries {
-            margin-top: 20px;
+            margin-top: 25px; /* Aumenta margin-top */
             width: 100%;
         }
 
         #data-entries h2 {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* Aumenta margin-bottom */
             color: var(--text-color-light);
         }
 
@@ -199,15 +211,15 @@
 
         .entry-card {
             background-color: var(--card-bg-light);
-            border: 1px solid var(--border-color-light);
-            border-radius: 10px;
-            padding: 12px; /* Reduz padding */
-            margin-bottom: 8px; /* Reduz margin-bottom */
+            border: var(--macos-border); /* Borda macOS */
+            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
+            padding: 15px; /* Aumenta padding */
+            margin-bottom: 10px; /* Aumenta margin-bottom */
             display: flex;
-            flex-direction: column; /* Empilha informações em mobile */
+            flex-direction: column;
             justify-content: space-between;
-            align-items: flex-start; /* Alinha ao início */
-            box-shadow: 0 2px 8px var(--shadow-light);
+            align-items: flex-start;
+            box-shadow: var(--macos-shadow); /* Sombra macOS */
             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
@@ -220,10 +232,10 @@
         .entry-info {
             flex-grow: 1;
             color: var(--text-color-light);
-            font-size: 0.9rem; /* Ajusta tamanho da fonte */
-            margin-bottom: 10px; /* Espaçamento entre info e ações */
-            line-height: 1.4; /* Melhora a legibilidade do texto */
-            word-break: break-word; /* Permite quebra de palavras longas */
+            font-size: 0.95rem; /* Ajusta tamanho da fonte */
+            margin-bottom: 12px; /* Espaçamento entre info e ações */
+            line-height: 1.5; /* Melhora a legibilidade do texto */
+            word-break: break-word;
         }
 
         body.dark-mode .entry-info {
@@ -235,19 +247,20 @@
         }
 
         .entry-actions {
-            width: 100%; /* Ocupa largura total */
-            text-align: right; /* Alinha botão de lixeira à direita */
+            width: 100%;
+            text-align: right;
         }
 
         .entry-actions button {
             background: none;
             border: none;
-            color: #ff3b30;
+            color: #ff3b30; /* Vermelho do iOS */
             cursor: pointer;
-            font-size: 1.2rem;
-            padding: 5px;
-            border-radius: 5px;
-            width: auto; /* Botão de lixeira não ocupa largura total */
+            font-size: 1.3rem; /* Aumenta tamanho do ícone */
+            padding: 8px; /* Aumenta padding */
+            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
+            width: auto;
+            box-shadow: none; /* Botão de lixeira sem sombra */
         }
 
         .entry-actions button:hover {
@@ -255,19 +268,20 @@
         }
 
         .theme-toggle {
-            position: static; /* Remove posicionamento absoluto em mobile */
-            margin-bottom: 20px; /* Adiciona margem abaixo */
+            position: static;
+            margin-bottom: 20px;
             background-color: var(--card-bg-light);
-            border: 1px solid var(--border-color-light);
-            border-radius: 8px;
-            padding: 8px 12px;
+            border: var(--macos-border);
+            border-radius: var(--macos-border-radius);
+            padding: 10px 15px; /* Aumenta padding */
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-color-light);
             transition: background-color 0.3s, border-color 0.3s, color 0.3s;
             width: 100%;
-            max-width: 600px; /* Alinha com os containers */
+            max-width: 650px; /* Alinha com os containers */
             text-align: center;
+            box-shadow: var(--macos-shadow);
         }
 
         body.dark-mode .theme-toggle {
@@ -280,16 +294,16 @@
             opacity: 0.9;
         }
 
-        @media (min-width: 768px) { /* Para tablets e desktops, volta ao posicionamento original */
+        @media (min-width: 768px) {
             .theme-toggle {
                 position: absolute;
-                top: 20px;
-                right: 20px;
+                top: 25px; /* Ajusta posição */
+                right: 25px; /* Ajusta posição */
                 width: auto;
                 max-width: none;
             }
             .entry-card {
-                flex-direction: row; /* Volta a ser linha */
+                flex-direction: row;
                 align-items: center;
             }
             .entry-info {
@@ -301,60 +315,43 @@
         }
 
         #summary {
-            margin-top: 20px;
-            padding: 15px; /* Reduz padding */
+            margin-top: 25px;
+            padding: 20px; /* Aumenta padding */
             background-color: var(--card-bg-light);
-            border: 1px solid var(--border-color-light);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px var(--shadow-light);
+            border: var(--macos-border);
+            border-radius: var(--macos-border-radius);
+            box-shadow: var(--macos-shadow);
             width: 100%;
-            max-width: 600px;
-            text-align: center;
+            max-width: 650px;
+            color: var(--text-color-light);
             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         body.dark-mode #summary {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
-            box-shadow: 0 4px 12px var(--shadow-dark);
-        }
-
-        #summary p {
-            margin: 5px 0;
-            font-size: 1rem;
-            color: var(--text-color-light);
-        }
-
-        body.dark-mode #summary p {
+            box-shadow: 0 2px 8px var(--shadow-dark);
             color: var(--text-color-dark);
         }
 
-        /* Estilos para os novos campos de tolerância */
-        .tolerance-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color-light);
+        #summary p {
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
 
-        body.dark-mode .tolerance-group {
-            border-color: var(--border-color-dark);
+        #summary p strong {
+            font-weight: 600;
         }
 
-        .tolerance-group .form-group {
-            margin-bottom: 0; /* Ajusta margem para os grupos internos */
+        .footer {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
         }
 
-        @media (min-width: 480px) {
-            .tolerance-group {
-                flex-direction: row;
-                justify-content: space-around;
-            }
-            .tolerance-group .form-group {
-                width: 48%; /* Divide o espaço entre os dois campos */
-            }
+        body.dark-mode .footer {
+            color: #bbb;
         }
     </style>
 </head>
@@ -362,7 +359,7 @@
     <button id="themeToggle" class="theme-toggle">Modo Escuro</button>
 
     <div class="container">
-        <h1>Controle de Ponto</h1>
+        <h1>Controle de Ponto Pessoal</h1>
 
         <div class="form-group">
             <label for="data">Data:</label>
@@ -389,47 +386,51 @@
             <input type="time" id="saidaReal" required>
         </div>
 
-        <!-- Novos campos para tolerância -->
-        <div class="tolerance-group">
-            <div class="form-group">
-                <label for="toleranciaEntrada">Tolerância Entrada (min):</label>
-                <input type="number" id="toleranciaEntrada" value="10" min="0">
-            </div>
-            <div class="form-group">
-                <label for="toleranciaSaida">Tolerância Saída (min):</label>
-                <input type="number" id="toleranciaSaida" value="10" min="0">
-            </div>
+        <div class="form-group">
+            <label for="editTolerance">Tolerância de Edição (minutos):</label>
+            <input type="number" id="editTolerance" value="10" min="0">
         </div>
 
         <div class="button-group">
             <button id="addEntryBtn" class="primary">Adicionar Registro</button>
-            <button id="clearEntriesBtn" class="secondary">Limpar Todos</button>
             <button id="generateExcelBtn" class="secondary">Gerar Excel</button>
+            <button id="clearEntriesBtn" class="secondary">Limpar Todos</button>
         </div>
     </div>
 
     <div id="data-entries" class="container">
-        <h2>Registros</h2>
+        <h2>Registros de Ponto</h2>
         <div id="entriesList">
-            <!-- Registros serão adicionados aqui pelo JavaScript -->
+            <!-- Registros serão inseridos aqui -->
         </div>
     </div>
 
     <div id="summary" class="container">
         <h2>Resumo do Banco de Horas</h2>
-        <p>Total Acumulado: <span id="totalBancoHoras">00:00</span></p>
+        <p>Total de Horas Devidas/Extras Acumuladas: <strong id="totalBancoHoras">00:00</strong></p>
     </div>
+
+    <footer class="footer">
+        Autor: Miquéias Lima
+    </footer>
 
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script>
-        // Referências aos elementos do DOM
+        // --- Constantes e Variáveis Globais ---
+        const ENTRADA_PREVISTA_PADRAO = "08:00";
+        const SAIDA_PREVISTA_PADRAO = "17:00";
+        const JORNADA_PADRAO_MINUTOS = 8 * 60; // 8 horas em minutos
+
+        let entries = [];
+        let editToleranceMinutes = 10; // Valor padrão para a tolerância de edição
+
+        // --- Elementos do DOM ---
         const dataInput = document.getElementById('data');
         const entradaPrevistaInput = document.getElementById('entradaPrevista');
         const saidaPrevistaInput = document.getElementById('saidaPrevista');
         const entradaRealInput = document.getElementById('entradaReal');
         const saidaRealInput = document.getElementById('saidaReal');
-        const toleranciaEntradaInput = document.getElementById('toleranciaEntrada'); // Novo
-        const toleranciaSaidaInput = document.getElementById('toleranciaSaida');   // Novo
+        const editToleranceInput = document.getElementById('editTolerance'); // Novo input
         const addEntryBtn = document.getElementById('addEntryBtn');
         const clearEntriesBtn = document.getElementById('clearEntriesBtn');
         const generateExcelBtn = document.getElementById('generateExcelBtn');
@@ -438,16 +439,16 @@
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
 
-        let entries = []; // Array para armazenar os registros de ponto
-
-        // --- Funções Auxiliares de Tempo ---
+        // --- Funções de Utilitário de Tempo ---
         function timeToMinutes(timeStr) {
+            if (!timeStr) return 0;
             const [hours, minutes] = timeStr.split(':').map(Number);
             return hours * 60 + minutes;
         }
 
         function minutesToTime(totalMinutes) {
-            const sign = totalMinutes < 0 ? '-' : '';
+            if (totalMinutes === 0) return "00:00";
+            const sign = totalMinutes < 0 ? "-" : "";
             totalMinutes = Math.abs(totalMinutes);
             const hours = Math.floor(totalMinutes / 60);
             const minutes = totalMinutes % 60;
@@ -460,57 +461,59 @@
             return endMinutes - startMinutes;
         }
 
-        // --- Funções de Persistência (LocalStorage) ---
-        function saveEntries() {
-            localStorage.setItem('pointEntries', JSON.stringify(entries));
-        }
-
+        // --- Funções de Gerenciamento de Registros ---
         function loadEntries() {
             const savedEntries = localStorage.getItem('pointEntries');
             if (savedEntries) {
                 entries = JSON.parse(savedEntries);
-                renderEntries();
             }
+            // Carrega a tolerância salva ou usa o padrão
+            const savedTolerance = localStorage.getItem('editTolerance');
+            if (savedTolerance !== null) {
+                editToleranceMinutes = parseInt(savedTolerance);
+                editToleranceInput.value = editToleranceMinutes;
+            }
+            renderEntries();
         }
 
-        // --- Renderização e Cálculos ---
+        function saveEntries() {
+            localStorage.setItem('pointEntries', JSON.stringify(entries));
+            localStorage.setItem('editTolerance', editToleranceMinutes); // Salva a tolerância
+        }
+
         function renderEntries() {
             entriesList.innerHTML = '';
-            let totalBancoHorasMin = 0;
+            let totalBancoHorasAcumulado = 0;
 
             entries.forEach((entry, index) => {
-                // Recalcula as horas para cada entrada com a tolerância atual
+                // Recalcula horas para garantir que a tolerância atual seja aplicada
                 const entradaPrevistaMin = timeToMinutes(entry.entradaPrevista);
                 const saidaPrevistaMin = timeToMinutes(entry.saidaPrevista);
                 const entradaRealMin = timeToMinutes(entry.entradaReal);
                 const saidaRealMin = timeToMinutes(entry.saidaReal);
-                const toleranciaEntradaMin = parseInt(entry.toleranciaEntrada || 0); // Pega a tolerância salva
-                const toleranciaSaidaMin = parseInt(entry.toleranciaSaida || 0);     // Pega a tolerância salva
 
-                // Aplica a tolerância
-                let entradaConsideradaMin = entradaRealMin;
-                if (entradaRealMin > entradaPrevistaMin && (entradaRealMin - entradaPrevistaMin) <= toleranciaEntradaMin) {
-                    entradaConsideradaMin = entradaPrevistaMin; // Considera como se tivesse entrado no horário previsto
-                } else if (entradaRealMin < entradaPrevistaMin && (entradaPrevistaMin - entradaRealMin) <= toleranciaEntradaMin) {
-                    entradaConsideradaMin = entradaPrevistaMin; // Considera como se tivesse entrado no horário previsto
+                let horasTrabalhadasDiaMin = calculateTimeDifference(entradaRealMin, saidaRealMin);
+
+                // Calcula horas devidas/extras com tolerância
+                let horasDevidasExtrasDiaMin = 0;
+                if (entradaRealMin < entradaPrevistaMin - editToleranceMinutes) {
+                    horasDevidasExtrasDiaMin += (entradaRealMin - (entradaPrevistaMin - editToleranceMinutes));
+                } else if (entradaRealMin > entradaPrevistaMin + editToleranceMinutes) {
+                    horasDevidasExtrasDiaMin += (entradaRealMin - (entradaPrevistaMin + editToleranceMinutes));
                 }
 
-                let saidaConsideradaMin = saidaRealMin;
-                if (saidaRealMin < saidaPrevistaMin && (saidaPrevistaMin - saidaRealMin) <= toleranciaSaidaMin) {
-                    saidaConsideradaMin = saidaPrevistaMin; // Considera como se tivesse saído no horário previsto
-                } else if (saidaRealMin > saidaPrevistaMin && (saidaRealMin - saidaPrevistaMin) <= toleranciaSaidaMin) {
-                    saidaConsideradaMin = saidaPrevistaMin; // Considera como se tivesse saído no horário previsto
+                if (saidaRealMin > saidaPrevistaMin + editToleranceMinutes) {
+                    horasDevidasExtrasDiaMin += (saidaRealMin - (saidaPrevistaMin + editToleranceMinutes));
+                } else if (saidaRealMin < saidaPrevistaMin - editToleranceMinutes) {
+                    horasDevidasExtrasDiaMin += (saidaRealMin - (saidaPrevistaMin - editToleranceMinutes));
                 }
 
-                const horasTrabalhadasDiaMin = calculateTimeDifference(minutesToTime(entradaConsideradaMin), minutesToTime(saidaConsideradaMin));
-                const horasPrevistasDiaMin = calculateTimeDifference(entry.entradaPrevista, entry.saidaPrevista);
-                const horasDevidasExtrasDiaMin = horasTrabalhadasDiaMin - horasPrevistasDiaMin;
-
-                totalBancoHorasMin += horasDevidasExtrasDiaMin;
+                // Ajusta o banco de horas acumulado
+                totalBancoHorasAcumulado += horasDevidasExtrasDiaMin;
 
                 entry.horasTrabalhadasDia = minutesToTime(horasTrabalhadasDiaMin);
                 entry.horasDevidasExtrasDia = minutesToTime(horasDevidasExtrasDiaMin);
-                entry.bancoHorasAcumulado = minutesToTime(totalBancoHorasMin); // Atualiza o acumulado para cada entrada
+                entry.bancoHorasAcumulado = minutesToTime(totalBancoHorasAcumulado);
 
                 const entryCard = document.createElement('div');
                 entryCard.classList.add('entry-card');
@@ -519,34 +522,32 @@
                         <p><strong>Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
                         <p><strong>Entrada Prevista:</strong> ${entry.entradaPrevista} | <strong>Saída Prevista:</strong> ${entry.saidaPrevista}</p>
                         <p><strong>Entrada Real:</strong> ${entry.entradaReal} | <strong>Saída Real:</strong> ${entry.saidaReal}</p>
-                        <p><strong>Tolerância Entrada:</strong> ${entry.toleranciaEntrada} min | <strong>Tolerância Saída:</strong> ${entry.toleranciaSaida} min</p>
-                        <p><strong>Horas Trabalhadas:</strong> ${entry.horasTrabalhadasDia}</p>
-                        <p><strong>Horas Devidas/Extras:</strong> ${entry.horasDevidasExtrasDia}</p>
-                        <p><strong>Banco de Horas Acumulado:</strong> ${entry.bancoHorasAcumulado}</p>
+                        <p><strong>Horas Trabalhadas (Dia):</strong> ${entry.horasTrabalhadasDia}</p>
+                        <p><strong>Horas Devidas/Extras (Dia):</strong> <span style="color: ${horasDevidasExtrasDiaMin < 0 ? '#ff3b30' : (horasDevidasExtrasDiaMin > 0 ? '#34c759' : 'inherit')}">${entry.horasDevidasExtrasDia}</span></p>
+                        <p><strong>Banco de Horas Acumulado:</strong> <span style="color: ${totalBancoHorasAcumulado < 0 ? '#ff3b30' : (totalBancoHorasAcumulado > 0 ? '#34c759' : 'inherit')}">${entry.bancoHorasAcumulado}</span></p>
                     </div>
                     <div class="entry-actions">
-                        <button data-index="${index}">🗑️</button>
+                        <button data-index="${index}" aria-label="Remover registro">🗑️</button>
                     </div>
                 `;
                 entriesList.appendChild(entryCard);
             });
 
-            totalBancoHorasSpan.textContent = minutesToTime(totalBancoHorasMin);
-            saveEntries(); // Salva os registros atualizados
+            totalBancoHorasSpan.textContent = minutesToTime(totalBancoHorasAcumulado);
+            totalBancoHorasSpan.style.color = totalBancoHorasAcumulado < 0 ? '#ff3b30' : (totalBancoHorasAcumulado > 0 ? '#34c759' : 'inherit');
+
+            saveEntries();
         }
 
-        // --- Adicionar Novo Registro ---
         function addEntry() {
             const data = dataInput.value;
-            const entradaPrevista = entradaPrevistaInput.value;
-            const saidaPrevista = saidaPrevistaInput.value;
+            const entradaPrevista = entradaPrevistaInput.value || ENTRADA_PREVISTA_PADRAO;
+            const saidaPrevista = saidaPrevistaInput.value || SAIDA_PREVISTA_PADRAO;
             const entradaReal = entradaRealInput.value;
             const saidaReal = saidaRealInput.value;
-            const toleranciaEntrada = toleranciaEntradaInput.value; // Pega o valor do input
-            const toleranciaSaida = toleranciaSaidaInput.value;     // Pega o valor do input
 
-            if (!data || !entradaPrevista || !saidaPrevista || !entradaReal || !saidaReal) {
-                alert('Por favor, preencha todos os campos de data e hora.');
+            if (!data || !entradaReal || !saidaReal) {
+                alert('Por favor, preencha a data, entrada real e saída real.');
                 return;
             }
 
@@ -556,8 +557,6 @@
                 saidaPrevista,
                 entradaReal,
                 saidaReal,
-                toleranciaEntrada, // Salva a tolerância no registro
-                toleranciaSaida,   // Salva a tolerância no registro
                 horasTrabalhadasDia: '', // Será calculado em renderEntries
                 horasDevidasExtrasDia: '', // Será calculado em renderEntries
                 bancoHorasAcumulado: '' // Será calculado em renderEntries
@@ -598,8 +597,6 @@
                 'Saída Prevista': entry.saidaPrevista,
                 'Entrada Real': entry.entradaReal,
                 'Saída Real': entry.saidaReal,
-                'Tolerância Entrada (min)': entry.toleranciaEntrada, // Adicionado ao Excel
-                'Tolerância Saída (min)': entry.toleranciaSaida,     // Adicionado ao Excel
                 'Horas Trabalhadas (Dia)': entry.horasTrabalhadasDia,
                 'Horas Devidas/Extras (Dia)': entry.horasDevidasExtrasDia,
                 'Banco de Horas Acumulado': entry.bancoHorasAcumulado
@@ -674,6 +671,18 @@
             }
         });
         themeToggle.addEventListener('click', toggleTheme);
+
+        // Listener para o input de tolerância
+        editToleranceInput.addEventListener('change', (event) => {
+            const newTolerance = parseInt(event.target.value);
+            if (!isNaN(newTolerance) && newTolerance >= 0) {
+                editToleranceMinutes = newTolerance;
+                renderEntries(); // Recalcula e renderiza com a nova tolerância
+            } else {
+                alert('Por favor, insira um número válido para a tolerância (maior ou igual a 0).');
+                editToleranceInput.value = editToleranceMinutes; // Volta ao valor anterior
+            }
+        });
 
         // --- Inicialização ---
         document.addEventListener('DOMContentLoaded', () => {
