@@ -9,9 +9,7 @@
     <!-- Adição para PWA: Link para o manifest.json -->
     <link rel="manifest" href="/Registro-de-Ponto/manifest.json">
     <!-- Adição para PWA: Ícone para iOS (Safari) -->
-    <!-- Este ícone é o que o iOS usa quando você "Adiciona à Tela de Início" -->
     <link rel="apple-touch-icon" href="/Registro-de-Ponto/apple-touch-icon.png">
-    <!-- Você pode adicionar outros tamanhos de apple-touch-icon se quiser, mas este é o mais comum. -->
 
     <style>
         :root {
@@ -103,7 +101,8 @@
         }
 
         .form-group input[type="date"],
-        .form-group input[type="time"] {
+        .form-group input[type="time"],
+        .form-group input[type="number"] { /* Adicionado para inputs de número */
             padding: 10px; /* Ajusta padding */
             border: 1px solid var(--border-color-light);
             border-radius: 8px;
@@ -322,7 +321,7 @@
 
         #summary p {
             margin: 5px 0;
-            font-size: 1rem; /* Ajusta tamanho da fonte */
+            font-size: 1rem;
             color: var(--text-color-light);
         }
 
@@ -330,77 +329,119 @@
             color: var(--text-color-dark);
         }
 
-        #summary strong {
-            font-weight: 600;
+        /* Estilos para os novos campos de tolerância */
+        .tolerance-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color-light);
         }
 
-        .positive-balance {
-            color: #34c759;
+        body.dark-mode .tolerance-group {
+            border-color: var(--border-color-dark);
         }
 
-        .negative-balance {
-            color: #ff3b30;
+        .tolerance-group .form-group {
+            margin-bottom: 0; /* Ajusta margem para os grupos internos */
+        }
+
+        @media (min-width: 480px) {
+            .tolerance-group {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            .tolerance-group .form-group {
+                width: 48%; /* Divide o espaço entre os dois campos */
+            }
         }
     </style>
-    <!-- SheetJS (XLSX) library for Excel generation -->
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-    <button class="theme-toggle" id="theme-toggle">Modo Escuro</button>
+    <button id="themeToggle" class="theme-toggle">Modo Escuro</button>
+
     <div class="container">
-        <h1>Controle de Ponto Pessoal</h1>
+        <h1>Controle de Ponto</h1>
+
         <div class="form-group">
             <label for="data">Data:</label>
             <input type="date" id="data" required>
         </div>
-        <div class="form-group">
-            <label for="entrada">Entrada Real (HH:MM):</label>
-            <input type="time" id="entrada" value="06:00" required>
-        </div>
-        <div class="form-group">
-            <label for="saida">Saída Real (HH:MM):</label>
-            <input type="time" id="saida" value="12:00" required>
-        </div>
-        <div class="button-group">
-            <button class="primary" id="add-entry">Adicionar Ponto</button>
-            <button class="secondary" id="clear-entries">Limpar Tudo</button>
-        </div>
-    </div>
-    <div class="container" id="data-entries">
-        <h2>Registros de Ponto</h2>
-        <div id="entries-list">
-            <!-- Entries will be added here -->
-        </div>
-        <div class="button-group">
-            <button class="primary" id="generate-excel">Gerar Excel</button>
-        </div>
-    </div>
-    <div class="container" id="summary">
-        <h2>Resumo do Banco de Horas</h2>
-        <p>Saldo Acumulado: <strong id="total-bank-hours">00:00</strong></p>
-    </div>
-    <script>
-        const dataInput = document.getElementById('data');
-        const entradaInput = document.getElementById('entrada');
-        const saidaInput = document.getElementById('saida');
-        const addEntryBtn = document.getElementById('add-entry');
-        const clearEntriesBtn = document.getElementById('clear-entries');
-        const generateExcelBtn = document.getElementById('generate-excel');
-        const entriesList = document.getElementById('entries-list');
-        const totalBankHoursSpan = document.getElementById('total-bank-hours');
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
 
-        // Horários previstos
-        const ENTRADA_PREVISTA = '06:00';
-        const SAIDA_PREVISTA = '12:00';
-        const TOLERANCIA_MINUTOS = 10; // 10 minutos
+        <div class="form-group">
+            <label for="entradaPrevista">Entrada Prevista:</label>
+            <input type="time" id="entradaPrevista" value="08:00" required>
+        </div>
+
+        <div class="form-group">
+            <label for="saidaPrevista">Saída Prevista:</label>
+            <input type="time" id="saidaPrevista" value="17:00" required>
+        </div>
+
+        <div class="form-group">
+            <label for="entradaReal">Entrada Real:</label>
+            <input type="time" id="entradaReal" required>
+        </div>
+
+        <div class="form-group">
+            <label for="saidaReal">Saída Real:</label>
+            <input type="time" id="saidaReal" required>
+        </div>
+
+        <!-- Novos campos para tolerância -->
+        <div class="tolerance-group">
+            <div class="form-group">
+                <label for="toleranciaEntrada">Tolerância Entrada (min):</label>
+                <input type="number" id="toleranciaEntrada" value="10" min="0">
+            </div>
+            <div class="form-group">
+                <label for="toleranciaSaida">Tolerância Saída (min):</label>
+                <input type="number" id="toleranciaSaida" value="10" min="0">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="addEntryBtn" class="primary">Adicionar Registro</button>
+            <button id="clearEntriesBtn" class="secondary">Limpar Todos</button>
+            <button id="generateExcelBtn" class="secondary">Gerar Excel</button>
+        </div>
+    </div>
+
+    <div id="data-entries" class="container">
+        <h2>Registros</h2>
+        <div id="entriesList">
+            <!-- Registros serão adicionados aqui pelo JavaScript -->
+        </div>
+    </div>
+
+    <div id="summary" class="container">
+        <h2>Resumo do Banco de Horas</h2>
+        <p>Total Acumulado: <span id="totalBancoHoras">00:00</span></p>
+    </div>
+
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+        // Referências aos elementos do DOM
+        const dataInput = document.getElementById('data');
+        const entradaPrevistaInput = document.getElementById('entradaPrevista');
+        const saidaPrevistaInput = document.getElementById('saidaPrevista');
+        const entradaRealInput = document.getElementById('entradaReal');
+        const saidaRealInput = document.getElementById('saidaReal');
+        const toleranciaEntradaInput = document.getElementById('toleranciaEntrada'); // Novo
+        const toleranciaSaidaInput = document.getElementById('toleranciaSaida');   // Novo
+        const addEntryBtn = document.getElementById('addEntryBtn');
+        const clearEntriesBtn = document.getElementById('clearEntriesBtn');
+        const generateExcelBtn = document.getElementById('generateExcelBtn');
+        const entriesList = document.getElementById('entriesList');
+        const totalBancoHorasSpan = document.getElementById('totalBancoHoras');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
 
         let entries = []; // Array para armazenar os registros de ponto
 
-        // --- Funções de Utilitário de Tempo ---
+        // --- Funções Auxiliares de Tempo ---
         function timeToMinutes(timeStr) {
-            if (!timeStr) return 0; // Lida com strings vazias
             const [hours, minutes] = timeStr.split(':').map(Number);
             return hours * 60 + minutes;
         }
@@ -419,87 +460,69 @@
             return endMinutes - startMinutes;
         }
 
-        // --- Lógica de Cálculo de Ponto ---
-        function calculateDailyPoint(data, entradaReal, saidaReal) {
-            const entradaPrevistaMin = timeToMinutes(ENTRADA_PREVISTA); // 360 (06:00)
-            const saidaPrevistaMin = timeToMinutes(SAIDA_PREVISTA);     // 720 (12:00)
-            const entradaRealMin = timeToMinutes(entradaReal);
-            const saidaRealMin = timeToMinutes(saidaReal);
-
-            let horasTrabalhadasDiaMin = 0;
-            let horasDevidasExtrasDiaMin = 0;
-
-            // --- Cálculo da Entrada ---
-            if (entradaReal) { // Só calcula se houver entrada real
-                if (entradaRealMin < (entradaPrevistaMin - TOLERANCIA_MINUTOS)) {
-                    // Entrada antes de 05:50 (ex: 05:49 ou antes)
-                    horasDevidasExtrasDiaMin += (entradaPrevistaMin - entradaRealMin); // Horas extras
-                } else if (entradaRealMin > entradaPrevistaMin) {
-                    // Entrada depois de 06:00 (ex: 06:01 ou depois)
-                    horasDevidasExtrasDiaMin -= (entradaRealMin - entradaPrevistaMin); // Horas negativas
-                }
-                // Se entrada entre 05:50 e 06:00, não há impacto no banco de horas (tolerância)
-            }
-
-            // --- Cálculo da Saída ---
-            if (saidaReal) { // Só calcula se houver saída real
-                if (saidaRealMin > (saidaPrevistaMin + TOLERANCIA_MINUTOS)) {
-                    // Saída depois de 12:10 (ex: 12:11 ou depois)
-                    horasDevidasExtrasDiaMin += (saidaRealMin - saidaPrevistaMin); // Horas extras
-                } else if (saidaRealMin < saidaPrevistaMin) {
-                    // Saída antes de 12:00 (ex: 11:59 ou antes)
-                    horasDevidasExtrasDiaMin -= (saidaPrevistaMin - saidaRealMin); // Horas negativas
-                }
-                // Se saída entre 12:00 e 12:10, não há impacto no banco de horas (tolerância)
-            }
-
-            // Horas trabalhadas no dia: tempo real entre entrada e saída
-            if (entradaReal && saidaReal) {
-                horasTrabalhadasDiaMin = calculateTimeDifference(entradaReal, saidaReal);
-            }
-
-            return {
-                horasTrabalhadasDia: minutesToTime(horasTrabalhadasDiaMin),
-                horasDevidasExtrasDia: minutesToTime(horasDevidasExtrasDiaMin)
-            };
-        }
-
-        // --- Gerenciamento de Dados e UI ---
-        function loadEntries() {
-            const storedEntries = localStorage.getItem('pointEntries');
-            if (storedEntries) {
-                entries = JSON.parse(storedEntries);
-                renderEntries();
-            }
-        }
-
+        // --- Funções de Persistência (LocalStorage) ---
         function saveEntries() {
             localStorage.setItem('pointEntries', JSON.stringify(entries));
         }
 
+        function loadEntries() {
+            const savedEntries = localStorage.getItem('pointEntries');
+            if (savedEntries) {
+                entries = JSON.parse(savedEntries);
+                renderEntries();
+            }
+        }
+
+        // --- Renderização e Cálculos ---
         function renderEntries() {
             entriesList.innerHTML = '';
-            let accumulatedBankHoursMin = 0;
-
-            // Ordena as entradas por data para garantir o cálculo correto do acumulado
-            entries.sort((a, b) => new Date(a.data) - new Date(b.data));
+            let totalBancoHorasMin = 0;
 
             entries.forEach((entry, index) => {
-                const { horasTrabalhadasDia, horasDevidasExtrasDia } = calculateDailyPoint(entry.data, entry.entradaReal, entry.saidaReal);
-                entry.horasTrabalhadasDia = horasTrabalhadasDia;
-                entry.horasDevidasExtrasDia = horasDevidasExtrasDia;
+                // Recalcula as horas para cada entrada com a tolerância atual
+                const entradaPrevistaMin = timeToMinutes(entry.entradaPrevista);
+                const saidaPrevistaMin = timeToMinutes(entry.saidaPrevista);
+                const entradaRealMin = timeToMinutes(entry.entradaReal);
+                const saidaRealMin = timeToMinutes(entry.saidaReal);
+                const toleranciaEntradaMin = parseInt(entry.toleranciaEntrada || 0); // Pega a tolerância salva
+                const toleranciaSaidaMin = parseInt(entry.toleranciaSaida || 0);     // Pega a tolerância salva
 
-                accumulatedBankHoursMin += timeToMinutes(horasDevidasExtrasDia);
-                entry.bancoHorasAcumulado = minutesToTime(accumulatedBankHoursMin);
+                // Aplica a tolerância
+                let entradaConsideradaMin = entradaRealMin;
+                if (entradaRealMin > entradaPrevistaMin && (entradaRealMin - entradaPrevistaMin) <= toleranciaEntradaMin) {
+                    entradaConsideradaMin = entradaPrevistaMin; // Considera como se tivesse entrado no horário previsto
+                } else if (entradaRealMin < entradaPrevistaMin && (entradaPrevistaMin - entradaRealMin) <= toleranciaEntradaMin) {
+                    entradaConsideradaMin = entradaPrevistaMin; // Considera como se tivesse entrado no horário previsto
+                }
+
+                let saidaConsideradaMin = saidaRealMin;
+                if (saidaRealMin < saidaPrevistaMin && (saidaPrevistaMin - saidaRealMin) <= toleranciaSaidaMin) {
+                    saidaConsideradaMin = saidaPrevistaMin; // Considera como se tivesse saído no horário previsto
+                } else if (saidaRealMin > saidaPrevistaMin && (saidaRealMin - saidaPrevistaMin) <= toleranciaSaidaMin) {
+                    saidaConsideradaMin = saidaPrevistaMin; // Considera como se tivesse saído no horário previsto
+                }
+
+                const horasTrabalhadasDiaMin = calculateTimeDifference(minutesToTime(entradaConsideradaMin), minutesToTime(saidaConsideradaMin));
+                const horasPrevistasDiaMin = calculateTimeDifference(entry.entradaPrevista, entry.saidaPrevista);
+                const horasDevidasExtrasDiaMin = horasTrabalhadasDiaMin - horasPrevistasDiaMin;
+
+                totalBancoHorasMin += horasDevidasExtrasDiaMin;
+
+                entry.horasTrabalhadasDia = minutesToTime(horasTrabalhadasDiaMin);
+                entry.horasDevidasExtrasDia = minutesToTime(horasDevidasExtrasDiaMin);
+                entry.bancoHorasAcumulado = minutesToTime(totalBancoHorasMin); // Atualiza o acumulado para cada entrada
 
                 const entryCard = document.createElement('div');
                 entryCard.classList.add('entry-card');
                 entryCard.innerHTML = `
                     <div class="entry-info">
-                        <strong>Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}<br>
-                        <strong>Entrada:</strong> ${entry.entradaReal} | <strong>Saída:</strong> ${entry.saidaReal}<br>
-                        <strong>Trabalhadas:</strong> ${entry.horasTrabalhadasDia} | <strong>Banco Dia:</strong> ${entry.horasDevidasExtrasDia}<br>
-                        <strong>Banco Acumulado:</strong> <span class="${accumulatedBankHoursMin < 0 ? 'negative-balance' : 'positive-balance'}">${entry.bancoHorasAcumulado}</span>
+                        <p><strong>Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Entrada Prevista:</strong> ${entry.entradaPrevista} | <strong>Saída Prevista:</strong> ${entry.saidaPrevista}</p>
+                        <p><strong>Entrada Real:</strong> ${entry.entradaReal} | <strong>Saída Real:</strong> ${entry.saidaReal}</p>
+                        <p><strong>Tolerância Entrada:</strong> ${entry.toleranciaEntrada} min | <strong>Tolerância Saída:</strong> ${entry.toleranciaSaida} min</p>
+                        <p><strong>Horas Trabalhadas:</strong> ${entry.horasTrabalhadasDia}</p>
+                        <p><strong>Horas Devidas/Extras:</strong> ${entry.horasDevidasExtrasDia}</p>
+                        <p><strong>Banco de Horas Acumulado:</strong> ${entry.bancoHorasAcumulado}</p>
                     </div>
                     <div class="entry-actions">
                         <button data-index="${index}">🗑️</button>
@@ -508,32 +531,37 @@
                 entriesList.appendChild(entryCard);
             });
 
-            totalBankHoursSpan.textContent = minutesToTime(accumulatedBankHoursMin);
-            totalBankHoursSpan.className = accumulatedBankHoursMin < 0 ? 'negative-balance' : 'positive-balance';
-            saveEntries(); // Salva após recalcular e renderizar
+            totalBancoHorasSpan.textContent = minutesToTime(totalBancoHorasMin);
+            saveEntries(); // Salva os registros atualizados
         }
 
+        // --- Adicionar Novo Registro ---
         function addEntry() {
             const data = dataInput.value;
-            const entrada = entradaInput.value;
-            const saida = saidaInput.value;
+            const entradaPrevista = entradaPrevistaInput.value;
+            const saidaPrevista = saidaPrevistaInput.value;
+            const entradaReal = entradaRealInput.value;
+            const saidaReal = saidaRealInput.value;
+            const toleranciaEntrada = toleranciaEntradaInput.value; // Pega o valor do input
+            const toleranciaSaida = toleranciaSaidaInput.value;     // Pega o valor do input
 
-            if (!data || !entrada || !saida) {
-                alert('Por favor, preencha todos os campos.');
+            if (!data || !entradaPrevista || !saidaPrevista || !entradaReal || !saidaReal) {
+                alert('Por favor, preencha todos os campos de data e hora.');
                 return;
             }
 
             const newEntry = {
-                data: data,
-                entradaPrevista: ENTRADA_PREVISTA,
-                saidaPrevista: SAIDA_PREVISTA,
-                entradaReal: entrada,
-                saidaReal: saida,
+                data,
+                entradaPrevista,
+                saidaPrevista,
+                entradaReal,
+                saidaReal,
+                toleranciaEntrada, // Salva a tolerância no registro
+                toleranciaSaida,   // Salva a tolerância no registro
                 horasTrabalhadasDia: '', // Será calculado em renderEntries
                 horasDevidasExtrasDia: '', // Será calculado em renderEntries
                 bancoHorasAcumulado: '' // Será calculado em renderEntries
             };
-
             entries.push(newEntry);
             renderEntries();
             // Opcional: Limpa os campos de entrada, exceto a data para facilitar entradas sequenciais
@@ -570,6 +598,8 @@
                 'Saída Prevista': entry.saidaPrevista,
                 'Entrada Real': entry.entradaReal,
                 'Saída Real': entry.saidaReal,
+                'Tolerância Entrada (min)': entry.toleranciaEntrada, // Adicionado ao Excel
+                'Tolerância Saída (min)': entry.toleranciaSaida,     // Adicionado ao Excel
                 'Horas Trabalhadas (Dia)': entry.horasTrabalhadasDia,
                 'Horas Devidas/Extras (Dia)': entry.horasDevidasExtrasDia,
                 'Banco de Horas Acumulado': entry.bancoHorasAcumulado
