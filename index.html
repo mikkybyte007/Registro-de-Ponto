@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Ponto Pessoal - Miquéias</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Adição para PWA: Link para o manifest.json -->
     <link rel="manifest" href="/Registro-de-Ponto/manifest.json">
@@ -13,42 +15,59 @@
 
     <style>
         :root {
-            --bg-color-light: #f0f2f5; /* Fundo claro */
-            --text-color-light: #333; /* Texto escuro */
-            --card-bg-light: #ffffff; /* Fundo de card claro */
-            --border-color-light: #e0e0e0; /* Borda clara */
-            --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave clara */
+            /* Cores para o tema claro */
+            --bg-color-light: #f0f2f5; /* Fundo geral */
+            --text-color-light: #333; /* Texto principal */
+            --card-bg-light: #ffffff; /* Fundo de cards/containers */
+            --border-color-light: #e0e0e0; /* Bordas de elementos */
+            --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave */
+            --input-bg-light: #fdfdfd; /* Fundo de inputs */
 
-            --bg-color-dark: #1e1e1e; /* Fundo escuro */
-            --text-color-dark: #f0f0f0; /* Texto claro */
-            --card-bg-dark: #2a2a2a; /* Fundo de card escuro */
-            --border-color-dark: #3a3a3a; /* Borda escura */
-            --shadow-dark: rgba(0, 0, 0, 0.3); /* Sombra suave escura */
+            /* Cores para o tema escuro */
+            --bg-color-dark: #1e1e1e;
+            --text-color-dark: #f0f0f0;
+            --card-bg-dark: #2a2a2a;
+            --border-color-dark: #3a3a3a;
+            --shadow-dark: rgba(0, 0, 0, 0.3);
+            --input-bg-dark: #222222;
 
-            /* Cores primárias e secundárias */
-            --primary-color: #007aff; /* Azul do iOS */
+            /* Cores primárias e secundárias (macOS inspired) */
+            --primary-color: #007aff; /* Azul vibrante */
             --primary-color-hover: #005bb5;
-            --secondary-color-light: #e9ecef; /* Cinza claro */
-            --secondary-color-dark: #4a4a4a; /* Cinza escuro */
+            --secondary-color-light: #e9ecef; /* Cinza claro para botões secundários */
+            --secondary-color-dark: #4a4a4a; /* Cinza escuro para botões secundários */
+
+            /* Cores de status */
+            --positive-balance-color: #34c759; /* Verde para saldo positivo */
+            --negative-balance-color: #ff3b30; /* Vermelho para saldo negativo */
+            --neutral-color: #888; /* Cor neutra para texto secundário */
 
             /* Estilo macOS */
-            --macos-border-radius: 10px; /* Cantos mais arredondados */
-            --macos-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais sutil */
-            --macos-border: 1px solid rgba(0, 0, 0, 0.08); /* Borda discreta */
+            --macos-border-radius: 12px; /* Cantos mais arredondados */
+            --macos-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra mais pronunciada, mas suave */
+            --macos-border: 1px solid var(--border-color-light); /* Borda discreta */
+            --macos-transition: all 0.2s ease-in-out; /* Transição suave para animações */
+        }
+
+        /* Reset básico e box-sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px; /* Aumenta padding para um visual mais espaçoso */
+            padding: 25px; /* Aumenta padding para um visual mais espaçoso */
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
+            transition: var(--macos-transition);
             background-color: var(--bg-color-light);
             color: var(--text-color-light);
-            line-height: 1.5; /* Melhora a legibilidade */
+            line-height: 1.6; /* Melhora a legibilidade */
+            font-size: 16px; /* Tamanho base da fonte */
         }
 
         body.dark-mode {
@@ -58,28 +77,29 @@
 
         .container {
             background-color: var(--card-bg-light);
-            border: var(--macos-border); /* Borda macOS */
-            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
-            box-shadow: var(--macos-shadow); /* Sombra macOS */
-            padding: 25px; /* Aumenta padding */
+            border: var(--macos-border);
+            border-radius: var(--macos-border-radius);
+            box-shadow: var(--macos-shadow);
+            padding: 30px; /* Aumenta padding */
             width: 100%;
-            max-width: 650px; /* Ajusta max-width para melhor visualização */
-            margin-bottom: 20px; /* Aumenta margin-bottom */
-            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            max-width: 700px; /* Ajusta max-width para melhor visualização */
+            margin-bottom: 25px; /* Aumenta margin-bottom */
+            transition: var(--macos-transition);
         }
 
         body.dark-mode .container {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
-            box-shadow: 0 2px 8px var(--shadow-dark); /* Sombra escura */
+            box-shadow: 0 4px 12px var(--shadow-dark);
         }
 
         h1 {
             text-align: center;
             color: var(--text-color-light);
-            margin-bottom: 25px; /* Aumenta margin-bottom */
-            font-size: 2rem; /* Ajusta tamanho da fonte */
-            font-weight: 600;
+            margin-bottom: 30px; /* Aumenta margin-bottom */
+            font-size: 2.2rem; /* Tamanho da fonte mais alegre */
+            font-weight: 700; /* Mais negrito */
+            letter-spacing: -0.02em; /* Espaçamento sutil */
         }
 
         body.dark-mode h1 {
@@ -87,22 +107,31 @@
         }
 
         h2 {
-            font-size: 1.6rem; /* Ajusta tamanho da fonte */
-            margin-bottom: 15px;
-            font-weight: 500;
+            font-size: 1.8rem; /* Tamanho da fonte mais alegre */
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode h2 {
+            color: var(--text-color-dark);
         }
 
         .form-group {
-            margin-bottom: 15px; /* Aumenta margin-bottom */
+            margin-bottom: 18px; /* Aumenta margin-bottom */
             display: flex;
             flex-direction: column;
-            gap: 8px; /* Aumenta espaçamento entre label e input */
+            gap: 10px; /* Aumenta espaçamento entre label e input */
         }
 
         .form-group label {
-            font-weight: 500;
+            font-weight: 600; /* Mais negrito */
             color: var(--text-color-light);
-            font-size: 1rem; /* Ajusta tamanho da fonte */
+            font-size: 1.05rem; /* Ajusta tamanho da fonte */
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espaçamento entre ícone e texto */
         }
 
         body.dark-mode .form-group label {
@@ -111,20 +140,20 @@
 
         .form-group input[type="date"],
         .form-group input[type="time"],
-        .form-group input[type="number"] { /* Adicionado input type number */
-            padding: 12px; /* Aumenta padding */
+        .form-group input[type="number"] {
+            padding: 14px; /* Aumenta padding */
             border: 1px solid var(--border-color-light);
-            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
-            font-size: 1rem;
-            background-color: var(--card-bg-light);
+            border-radius: var(--macos-border-radius);
+            font-size: 1.05rem;
+            background-color: var(--input-bg-light); /* Fundo de input dedicado */
             color: var(--text-color-light);
-            transition: border-color 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
-            -webkit-appearance: none; /* Remove estilo padrão de input em iOS */
-            min-width: 120px; /* Garante largura mínima */
+            transition: var(--macos-transition);
+            -webkit-appearance: none;
+            min-width: 130px;
         }
 
         body.dark-mode .form-group input {
-            background-color: var(--bg-color-dark);
+            background-color: var(--input-bg-dark);
             border-color: var(--border-color-dark);
             color: var(--text-color-dark);
         }
@@ -132,56 +161,69 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); /* Sombra de foco macOS */
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25); /* Sombra de foco mais pronunciada */
         }
 
         .button-group {
             display: flex;
-            flex-direction: column; /* Botões empilhados em mobile */
-            gap: 12px; /* Aumenta gap */
-            margin-top: 20px; /* Aumenta margin-top */
+            flex-direction: column;
+            gap: 15px; /* Aumenta gap */
+            margin-top: 25px; /* Aumenta margin-top */
             justify-content: center;
         }
 
         @media (min-width: 480px) {
             .button-group {
                 flex-direction: row;
+                flex-wrap: wrap; /* Permite quebra de linha em telas intermediárias */
+            }
+            .button-group button {
+                flex: 1 1 auto; /* Botões se ajustam e ocupam espaço */
+                max-width: calc(50% - 7.5px); /* Dois botões por linha com gap */
+            }
+            .button-group button:nth-child(3) { /* Se houver 3 botões, o terceiro fica em nova linha ou centralizado */
+                max-width: 100%;
             }
         }
+        @media (min-width: 600px) { /* Para 3 botões em linha */
+            .button-group button {
+                max-width: calc(33.333% - 10px); /* Três botões por linha com gap */
+            }
+        }
+
 
         button {
-            padding: 14px 22px; /* Aumenta padding */
+            padding: 16px 25px; /* Aumenta padding */
             border: none;
-            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
-            font-size: 1.05rem;
+            border-radius: var(--macos-border-radius);
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: background-color 0.2s, opacity 0.2s, box-shadow 0.2s;
-            font-weight: 500;
-            width: 100%; /* Ocupa largura total em mobile */
-            box-shadow: var(--macos-shadow); /* Sombra macOS */
-        }
-
-        @media (min-width: 480px) {
-            button {
-                width: auto; /* Volta a largura automática em telas maiores */
-            }
+            transition: var(--macos-transition);
+            font-weight: 600;
+            width: 100%;
+            box-shadow: var(--macos-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Espaçamento entre ícone e texto do botão */
         }
 
         button.primary {
             background-color: var(--primary-color);
             color: white;
-            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
         }
 
         button.primary:hover {
             background-color: var(--primary-color-hover);
-            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+            transform: translateY(-2px); /* Animação sutil */
         }
 
         button.secondary {
             background-color: var(--secondary-color-light);
             color: var(--text-color-light);
-            border: var(--macos-border); /* Borda macOS */
+            border: 1px solid var(--border-color-light); /* Borda para secundário */
         }
 
         body.dark-mode button.secondary {
@@ -192,96 +234,113 @@
 
         button.secondary:hover {
             opacity: 0.9;
+            transform: translateY(-1px); /* Animação sutil */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         #data-entries {
-            margin-top: 25px; /* Aumenta margin-top */
+            margin-top: 30px; /* Aumenta margin-top */
             width: 100%;
         }
 
         #data-entries h2 {
-            text-align: center;
-            margin-bottom: 20px; /* Aumenta margin-bottom */
-            color: var(--text-color-light);
-        }
-
-        body.dark-mode #data-entries h2 {
-            color: var(--text-color-dark);
+            margin-bottom: 25px; /* Aumenta margin-bottom */
         }
 
         .entry-card {
             background-color: var(--card-bg-light);
-            border: var(--macos-border); /* Borda macOS */
-            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
-            padding: 15px; /* Aumenta padding */
-            margin-bottom: 10px; /* Aumenta margin-bottom */
+            border: var(--macos-border);
+            border-radius: var(--macos-border-radius);
+            padding: 20px; /* Aumenta padding */
+            margin-bottom: 15px; /* Aumenta margin-bottom */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: flex-start;
-            box-shadow: var(--macos-shadow); /* Sombra macOS */
-            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            box-shadow: var(--macos-shadow);
+            transition: var(--macos-transition);
+            position: relative; /* Para posicionar o botão de lixeira */
         }
 
         body.dark-mode .entry-card {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
-            box-shadow: 0 2px 8px var(--shadow-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        .entry-card:hover {
+            transform: translateY(-3px); /* Animação ao passar o mouse */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
         .entry-info {
             flex-grow: 1;
             color: var(--text-color-light);
-            font-size: 0.95rem; /* Ajusta tamanho da fonte */
-            margin-bottom: 12px; /* Espaçamento entre info e ações */
-            line-height: 1.5; /* Melhora a legibilidade do texto */
+            font-size: 1rem; /* Ajusta tamanho da fonte */
+            margin-bottom: 15px; /* Espaçamento entre info e ações */
+            line-height: 1.6; /* Melhora a legibilidade do texto */
             word-break: break-word;
+            width: 100%; /* Ocupa largura total */
         }
 
         body.dark-mode .entry-info {
             color: var(--text-color-dark);
         }
 
+        .entry-info p {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espaçamento entre ícone e texto */
+            margin-bottom: 5px; /* Espaçamento entre as linhas de info */
+        }
+
         .entry-info strong {
             font-weight: 600;
+            min-width: 120px; /* Alinha os dois pontos */
+            display: inline-block;
         }
 
         .entry-actions {
-            width: 100%;
-            text-align: right;
+            position: absolute; /* Posiciona o botão de lixeira */
+            top: 15px;
+            right: 15px;
+            width: auto; /* Não ocupa largura total */
         }
 
         .entry-actions button {
             background: none;
             border: none;
-            color: #ff3b30; /* Vermelho do iOS */
+            color: var(--negative-balance-color); /* Vermelho para lixeira */
             cursor: pointer;
-            font-size: 1.3rem; /* Aumenta tamanho do ícone */
-            padding: 8px; /* Aumenta padding */
-            border-radius: var(--macos-border-radius); /* Cantos arredondados macOS */
+            font-size: 1.4rem; /* Aumenta tamanho do ícone */
+            padding: 8px;
+            border-radius: var(--macos-border-radius);
             width: auto;
-            box-shadow: none; /* Botão de lixeira sem sombra */
+            box-shadow: none;
+            transition: var(--macos-transition);
         }
 
         .entry-actions button:hover {
-            background-color: rgba(255, 59, 48, 0.1);
+            background-color: rgba(255, 59, 48, 0.15);
+            transform: scale(1.1); /* Animação de escala */
         }
 
         .theme-toggle {
             position: static;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             background-color: var(--card-bg-light);
             border: var(--macos-border);
             border-radius: var(--macos-border-radius);
-            padding: 10px 15px; /* Aumenta padding */
+            padding: 12px 18px; /* Aumenta padding */
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-color-light);
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            transition: var(--macos-transition);
             width: 100%;
-            max-width: 650px; /* Alinha com os containers */
+            max-width: 700px; /* Alinha com os containers */
             text-align: center;
             box-shadow: var(--macos-shadow);
+            font-weight: 500;
         }
 
         body.dark-mode .theme-toggle {
@@ -292,66 +351,86 @@
 
         .theme-toggle:hover {
             opacity: 0.9;
+            transform: translateY(-1px);
         }
 
         @media (min-width: 768px) {
             .theme-toggle {
                 position: absolute;
-                top: 25px; /* Ajusta posição */
-                right: 25px; /* Ajusta posição */
+                top: 25px;
+                right: 25px;
                 width: auto;
                 max-width: none;
             }
             .entry-card {
                 flex-direction: row;
                 align-items: center;
+                padding-right: 60px; /* Espaço para o botão de lixeira */
             }
             .entry-info {
                 margin-bottom: 0;
             }
             .entry-actions {
-                width: auto;
+                position: static; /* Volta a ser estático para alinhamento */
+                margin-left: auto; /* Empurra para a direita */
             }
         }
 
         #summary {
-            margin-top: 25px;
-            padding: 20px; /* Aumenta padding */
+            margin-top: 30px;
+            padding: 25px; /* Aumenta padding */
             background-color: var(--card-bg-light);
             border: var(--macos-border);
             border-radius: var(--macos-border-radius);
             box-shadow: var(--macos-shadow);
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             color: var(--text-color-light);
-            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            transition: var(--macos-transition);
+            text-align: center; /* Centraliza o texto do resumo */
         }
 
         body.dark-mode #summary {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
-            box-shadow: 0 2px 8px var(--shadow-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
             color: var(--text-color-dark);
         }
 
         #summary p {
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centraliza o conteúdo do parágrafo */
+            gap: 8px;
         }
 
         #summary p strong {
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .footer {
-            margin-top: 30px;
-            font-size: 0.85rem;
-            color: #888;
+            margin-top: 40px; /* Aumenta margem */
+            font-size: 0.9rem;
+            color: var(--neutral-color);
             text-align: center;
+            padding-bottom: 20px; /* Espaçamento no final da página */
         }
 
         body.dark-mode .footer {
             color: #bbb;
+        }
+
+        /* Cores para saldo */
+        .positive-balance {
+            color: var(--positive-balance-color);
+            font-weight: 700;
+        }
+
+        .negative-balance {
+            color: var(--negative-balance-color);
+            font-weight: 700;
         }
     </style>
 </head>
@@ -362,39 +441,39 @@
         <h1>Controle de Ponto Pessoal</h1>
 
         <div class="form-group">
-            <label for="data">Data:</label>
+            <label for="data"><i class="fas fa-calendar-alt"></i> Data:</label>
             <input type="date" id="data" required>
         </div>
 
         <div class="form-group">
-            <label for="entradaPrevista">Entrada Prevista:</label>
+            <label for="entradaPrevista"><i class="fas fa-clock"></i> Entrada Prevista:</label>
             <input type="time" id="entradaPrevista" value="08:00" required>
         </div>
 
         <div class="form-group">
-            <label for="saidaPrevista">Saída Prevista:</label>
+            <label for="saidaPrevista"><i class="fas fa-clock"></i> Saída Prevista:</label>
             <input type="time" id="saidaPrevista" value="17:00" required>
         </div>
 
         <div class="form-group">
-            <label for="entradaReal">Entrada Real:</label>
+            <label for="entradaReal"><i class="fas fa-clock"></i> Entrada Real:</label>
             <input type="time" id="entradaReal" required>
         </div>
 
         <div class="form-group">
-            <label for="saidaReal">Saída Real:</label>
+            <label for="saidaReal"><i class="fas fa-clock"></i> Saída Real:</label>
             <input type="time" id="saidaReal" required>
         </div>
 
         <div class="form-group">
-            <label for="editTolerance">Tolerância de Edição (minutos):</label>
+            <label for="editTolerance"><i class="fas fa-hourglass-half"></i> Tolerância de Edição (minutos):</label>
             <input type="number" id="editTolerance" value="10" min="0">
         </div>
 
         <div class="button-group">
-            <button id="addEntryBtn" class="primary">Adicionar Registro</button>
-            <button id="generateExcelBtn" class="secondary">Gerar Excel</button>
-            <button id="clearEntriesBtn" class="secondary">Limpar Todos</button>
+            <button id="addEntryBtn" class="primary"><i class="fas fa-plus-circle"></i> Adicionar Registro</button>
+            <button id="generateExcelBtn" class="secondary"><i class="fas fa-file-excel"></i> Gerar Excel</button>
+            <button id="clearEntriesBtn" class="secondary"><i class="fas fa-trash-alt"></i> Limpar Todos</button>
         </div>
     </div>
 
@@ -407,7 +486,7 @@
 
     <div id="summary" class="container">
         <h2>Resumo do Banco de Horas</h2>
-        <p>Total de Horas Devidas/Extras Acumuladas: <strong id="totalBancoHoras">00:00</strong></p>
+        <p><i class="fas fa-wallet"></i> Total de Horas Devidas/Extras Acumuladas: <strong id="totalBancoHoras">00:00</strong></p>
     </div>
 
     <footer class="footer">
@@ -419,7 +498,6 @@
         // --- Constantes e Variáveis Globais ---
         const ENTRADA_PREVISTA_PADRAO = "08:00";
         const SAIDA_PREVISTA_PADRAO = "17:00";
-        const JORNADA_PADRAO_MINUTOS = 8 * 60; // 8 horas em minutos
 
         let entries = [];
         let editToleranceMinutes = 10; // Valor padrão para a tolerância de edição
@@ -430,7 +508,7 @@
         const saidaPrevistaInput = document.getElementById('saidaPrevista');
         const entradaRealInput = document.getElementById('entradaReal');
         const saidaRealInput = document.getElementById('saidaReal');
-        const editToleranceInput = document.getElementById('editTolerance'); // Novo input
+        const editToleranceInput = document.getElementById('editTolerance');
         const addEntryBtn = document.getElementById('addEntryBtn');
         const clearEntriesBtn = document.getElementById('clearEntriesBtn');
         const generateExcelBtn = document.getElementById('generateExcelBtn');
@@ -467,7 +545,6 @@
             if (savedEntries) {
                 entries = JSON.parse(savedEntries);
             }
-            // Carrega a tolerância salva ou usa o padrão
             const savedTolerance = localStorage.getItem('editTolerance');
             if (savedTolerance !== null) {
                 editToleranceMinutes = parseInt(savedTolerance);
@@ -478,37 +555,39 @@
 
         function saveEntries() {
             localStorage.setItem('pointEntries', JSON.stringify(entries));
-            localStorage.setItem('editTolerance', editToleranceMinutes); // Salva a tolerância
+            localStorage.setItem('editTolerance', editToleranceMinutes);
         }
 
         function renderEntries() {
             entriesList.innerHTML = '';
             let totalBancoHorasAcumulado = 0;
 
+            entries.sort((a, b) => new Date(a.data) - new Date(b.data));
+
             entries.forEach((entry, index) => {
-                // Recalcula horas para garantir que a tolerância atual seja aplicada
                 const entradaPrevistaMin = timeToMinutes(entry.entradaPrevista);
                 const saidaPrevistaMin = timeToMinutes(entry.saidaPrevista);
                 const entradaRealMin = timeToMinutes(entry.entradaReal);
                 const saidaRealMin = timeToMinutes(entry.saidaReal);
 
-                let horasTrabalhadasDiaMin = calculateTimeDifference(entradaRealMin, saidaRealMin);
+                const horasTrabalhadasDiaMin = calculateTimeDifference(entry.entradaReal, entry.saidaReal);
 
-                // Calcula horas devidas/extras com tolerância
                 let horasDevidasExtrasDiaMin = 0;
+
+                // Lógica de tolerância para entrada
                 if (entradaRealMin < entradaPrevistaMin - editToleranceMinutes) {
-                    horasDevidasExtrasDiaMin += (entradaRealMin - (entradaPrevistaMin - editToleranceMinutes));
+                    horasDevidasExtrasDiaMin += (entradaPrevistaMin - editToleranceMinutes) - entradaRealMin;
                 } else if (entradaRealMin > entradaPrevistaMin + editToleranceMinutes) {
-                    horasDevidasExtrasDiaMin += (entradaRealMin - (entradaPrevistaMin + editToleranceMinutes));
+                    horasDevidasExtrasDiaMin -= (entradaRealMin - (entradaPrevistaMin + editToleranceMinutes));
                 }
 
+                // Lógica de tolerância para saída
                 if (saidaRealMin > saidaPrevistaMin + editToleranceMinutes) {
-                    horasDevidasExtrasDiaMin += (saidaRealMin - (saidaPrevistaMin + editToleranceMinutes));
+                    horasDevidasExtrasDiaMin += saidaRealMin - (saidaPrevistaMin + editToleranceMinutes);
                 } else if (saidaRealMin < saidaPrevistaMin - editToleranceMinutes) {
-                    horasDevidasExtrasDiaMin += (saidaRealMin - (saidaPrevistaMin - editToleranceMinutes));
+                    horasDevidasExtrasDiaMin -= (saidaPrevistaMin - editToleranceMinutes) - saidaRealMin;
                 }
 
-                // Ajusta o banco de horas acumulado
                 totalBancoHorasAcumulado += horasDevidasExtrasDiaMin;
 
                 entry.horasTrabalhadasDia = minutesToTime(horasTrabalhadasDiaMin);
@@ -519,22 +598,23 @@
                 entryCard.classList.add('entry-card');
                 entryCard.innerHTML = `
                     <div class="entry-info">
-                        <p><strong>Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
-                        <p><strong>Entrada Prevista:</strong> ${entry.entradaPrevista} | <strong>Saída Prevista:</strong> ${entry.saidaPrevista}</p>
-                        <p><strong>Entrada Real:</strong> ${entry.entradaReal} | <strong>Saída Real:</strong> ${entry.saidaReal}</p>
-                        <p><strong>Horas Trabalhadas (Dia):</strong> ${entry.horasTrabalhadasDia}</p>
-                        <p><strong>Horas Devidas/Extras (Dia):</strong> <span style="color: ${horasDevidasExtrasDiaMin < 0 ? '#ff3b30' : (horasDevidasExtrasDiaMin > 0 ? '#34c759' : 'inherit')}">${entry.horasDevidasExtrasDia}</span></p>
-                        <p><strong>Banco de Horas Acumulado:</strong> <span style="color: ${totalBancoHorasAcumulado < 0 ? '#ff3b30' : (totalBancoHorasAcumulado > 0 ? '#34c759' : 'inherit')}">${entry.bancoHorasAcumulado}</span></p>
+                        <p><strong><i class="fas fa-calendar-alt"></i> Data:</strong> ${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
+                        <p><strong><i class="fas fa-clock"></i> Entrada Prevista:</strong> ${entry.entradaPrevista} | <strong>Saída Prevista:</strong> ${entry.saidaPrevista}</p>
+                        <p><strong><i class="fas fa-clock"></i> Entrada Real:</strong> ${entry.entradaReal} | <strong>Saída Real:</strong> ${entry.saidaReal}</p>
+                        <p><strong><i class="fas fa-hourglass-half"></i> Tolerância Aplicada:</strong> ${editToleranceMinutes} min</p>
+                        <p><strong><i class="fas fa-briefcase"></i> Horas Trabalhadas (Dia):</strong> ${entry.horasTrabalhadasDia}</p>
+                        <p><strong><i class="fas fa-exchange-alt"></i> Banco Dia:</strong> <span class="${horasDevidasExtrasDiaMin < 0 ? 'negative-balance' : (horasDevidasExtrasDiaMin > 0 ? 'positive-balance' : '')}">${entry.horasDevidasExtrasDia}</span></p>
+                        <p><strong><i class="fas fa-wallet"></i> Banco Acumulado:</strong> <span class="${totalBancoHorasAcumulado < 0 ? 'negative-balance' : (totalBancoHorasAcumulado > 0 ? 'positive-balance' : '')}">${entry.bancoHorasAcumulado}</span></p>
                     </div>
                     <div class="entry-actions">
-                        <button data-index="${index}" aria-label="Remover registro">🗑️</button>
+                        <button data-index="${index}" aria-label="Remover registro"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 `;
                 entriesList.appendChild(entryCard);
             });
 
             totalBancoHorasSpan.textContent = minutesToTime(totalBancoHorasAcumulado);
-            totalBancoHorasSpan.style.color = totalBancoHorasAcumulado < 0 ? '#ff3b30' : (totalBancoHorasAcumulado > 0 ? '#34c759' : 'inherit');
+            totalBancoHorasSpan.className = totalBancoHorasAcumulado < 0 ? 'negative-balance' : (totalBancoHorasAcumulado > 0 ? 'positive-balance' : '');
 
             saveEntries();
         }
@@ -557,9 +637,9 @@
                 saidaPrevista,
                 entradaReal,
                 saidaReal,
-                horasTrabalhadasDia: '', // Será calculado em renderEntries
-                horasDevidasExtrasDia: '', // Será calculado em renderEntries
-                bancoHorasAcumulado: '' // Será calculado em renderEntries
+                horasTrabalhadasDia: '',
+                horasDevidasExtrasDia: '',
+                bancoHorasAcumulado: ''
             };
             entries.push(newEntry);
             renderEntries();
@@ -590,13 +670,13 @@
                 return;
             }
 
-            // Prepara os dados para o Excel
             const dataForExcel = entries.map(entry => ({
                 'Data': new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR'),
                 'Entrada Prevista': entry.entradaPrevista,
                 'Saída Prevista': entry.saidaPrevista,
                 'Entrada Real': entry.entradaReal,
                 'Saída Real': entry.saidaReal,
+                'Tolerância Aplicada (min)': editToleranceMinutes,
                 'Horas Trabalhadas (Dia)': entry.horasTrabalhadasDia,
                 'Horas Devidas/Extras (Dia)': entry.horasDevidasExtrasDia,
                 'Banco de Horas Acumulado': entry.bancoHorasAcumulado
@@ -606,19 +686,16 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Controle de Ponto");
 
-            // Define o nome do arquivo com o período (21 do mês anterior ao 20 do mês atual)
             const today = new Date();
             const currentDay = today.getDate();
             let startMonth, startYear, endMonth, endYear;
 
             if (currentDay > 20) {
-                // Se estamos entre o dia 21 e o final do mês, o ciclo atual começou no dia 21 deste mês
                 startMonth = today.getMonth();
                 startYear = today.getFullYear();
                 endMonth = (startMonth + 1) % 12;
                 endYear = (endMonth === 0) ? startYear + 1 : startYear;
             } else {
-                // Se estamos entre o dia 1 e 20, o ciclo atual começou no dia 21 do mês anterior
                 endMonth = today.getMonth();
                 endYear = today.getFullYear();
                 startMonth = (endMonth === 0) ? 11 : endMonth - 1;
@@ -637,11 +714,11 @@
         function applyTheme(isDarkMode) {
             if (isDarkMode) {
                 body.classList.add('dark-mode');
-                themeToggle.textContent = 'Modo Claro';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark-mode');
-                themeToggle.textContent = 'Modo Escuro';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Escuro';
                 localStorage.setItem('theme', 'light');
             }
         }
@@ -653,7 +730,6 @@
 
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme');
-            // Como você prefere o tema claro como padrão, vamos garantir isso.
             if (savedTheme === 'dark') {
                 applyTheme(true);
             } else {
@@ -666,27 +742,25 @@
         clearEntriesBtn.addEventListener('click', clearAllEntries);
         generateExcelBtn.addEventListener('click', generateExcel);
         entriesList.addEventListener('click', (event) => {
-            if (event.target.tagName === 'BUTTON' && event.target.dataset.index) {
-                deleteEntry(parseInt(event.target.dataset.index));
+            if (event.target.closest('button') && event.target.closest('button').dataset.index) {
+                deleteEntry(parseInt(event.target.closest('button').dataset.index));
             }
         });
         themeToggle.addEventListener('click', toggleTheme);
 
-        // Listener para o input de tolerância
         editToleranceInput.addEventListener('change', (event) => {
             const newTolerance = parseInt(event.target.value);
             if (!isNaN(newTolerance) && newTolerance >= 0) {
                 editToleranceMinutes = newTolerance;
-                renderEntries(); // Recalcula e renderiza com a nova tolerância
+                renderEntries();
             } else {
                 alert('Por favor, insira um número válido para a tolerância (maior ou igual a 0).');
-                editToleranceInput.value = editToleranceMinutes; // Volta ao valor anterior
+                editToleranceInput.value = editToleranceMinutes;
             }
         });
 
         // --- Inicialização ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Define a data atual como padrão no campo de data
             dataInput.valueAsDate = new Date();
             loadTheme();
             loadEntries();
