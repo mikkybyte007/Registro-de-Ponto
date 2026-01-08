@@ -41,11 +41,10 @@
             --positive-balance-color: #34c759; /* Verde para saldo positivo */
             --negative-balance-color: #ff3b30; /* Vermelho para saldo negativo */
             --neutral-color: #888; /* Cor neutra para texto secundário */
-            --icon-color-primary: #007aff; /* Cor primária para ícones */
-            --icon-color-secondary: #ff9500; /* Laranja para ícones de tempo/tolerância */
-            --icon-color-success: #34c759; /* Verde para ícones de sucesso */
-            --icon-color-danger: #ff3b30; /* Vermelho para ícones de perigo/lixeira */
-            --icon-color-info: #5ac8fa; /* Azul claro para ícones de informação */
+            --excel-icon-color: #28a745; /* Verde para ícone do Excel */
+            --clock-icon-color: #ff9500; /* Laranja para ícone de relógio */
+            --briefcase-icon-color: #5ac8fa; /* Azul claro para ícone de horas trabalhadas */
+            --trash-icon-color: #ff3b30; /* Vermelho para ícone de lixeira */
 
 
             /* Estilo macOS */
@@ -260,7 +259,7 @@
             padding: 20px; /* Aumenta padding */
             margin-bottom: 15px; /* Aumenta margin-bottom */
             display: flex;
-            flex-direction: column; /* Sempre em coluna para mobile */
+            flex-direction: column;
             justify-content: space-between;
             align-items: flex-start;
             box-shadow: var(--macos-shadow);
@@ -282,14 +281,11 @@
         .entry-info {
             flex-grow: 1;
             color: var(--text-color-light);
-            font-size: 1rem; /* Ajusta tamanho da fonte */
+            font-size: 0.9rem; /* Fonte menor para caber no celular */
             margin-bottom: 15px; /* Espaçamento entre info e ações */
-            line-height: 1.6; /* Melhora a legibilidade do texto */
+            line-height: 1.4; /* Melhora a legibilidade do texto */
             word-break: break-word;
             width: 100%; /* Ocupa largura total */
-            display: flex; /* Para organizar as linhas de informação */
-            flex-direction: column; /* Cada linha de info em sua própria linha */
-            gap: 5px; /* Espaçamento entre as linhas de info */
         }
 
         body.dark-mode .entry-info {
@@ -299,59 +295,24 @@
         .entry-info p {
             display: flex;
             align-items: center;
-            /* Remove gap aqui para controlar melhor o alinhamento de texto/valor */
-            flex-wrap: wrap; /* Permite quebra de linha para o valor se for muito longo */
+            gap: 8px; /* Espaçamento entre ícone e texto */
+            margin-bottom: 5px; /* Espaçamento entre as linhas de info */
+            flex-wrap: wrap; /* Permite quebra de linha para o conteúdo */
         }
 
         .entry-info p strong {
             font-weight: 600;
             min-width: 120px; /* Alinha os dois pontos */
-            display: inline-flex; /* Para alinhar ícone e texto da label */
-            align-items: center;
-            gap: 8px; /* Espaçamento entre ícone e texto da label */
-            white-space: nowrap; /* Impede quebra de linha na label */
+            display: inline-block;
+            white-space: nowrap; /* Impede que o label quebre */
         }
 
-        /* Estilo para os valores dos pontos (data, horas, etc.) */
-        .entry-info p span {
-            flex-grow: 1; /* Permite que o valor ocupe o espaço restante */
-            text-align: right; /* Alinha o valor à direita */
-            white-space: nowrap; /* Impede quebra de linha no valor */
-            overflow: hidden; /* Esconde o que transborda */
-            text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
+        /* Estilo para os valores de tempo dentro dos parágrafos */
+        .entry-info p span, .entry-info p time {
+            white-space: nowrap; /* Impede que os horários quebrem */
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        /* Ajuste específico para os valores de hora para não quebrar */
-        .entry-info p .time-value {
-            white-space: nowrap; /* Garante que a hora não quebre */
-            min-width: 60px; /* Garante espaço mínimo para HH:MM */
-            text-align: left; /* Alinha à esquerda para valores de hora */
-        }
-
-        /* Ajuste para o par de entrada/saída prevista e real */
-        .entry-info .time-pair {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 10px; /* Espaçamento entre os pares */
-        }
-        .entry-info .time-pair .time-label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .entry-info .time-pair .time-value {
-            font-weight: normal;
-            flex-grow: 1;
-            text-align: right;
-        }
-        .entry-info .time-pair .time-separator {
-            margin: 0 5px;
-            color: var(--neutral-color);
-        }
-
 
         .entry-actions {
             position: absolute; /* Posiciona o botão de lixeira */
@@ -363,9 +324,9 @@
         .entry-actions button {
             background: none;
             border: none;
-            color: var(--icon-color-danger); /* Vermelho vibrante para lixeira */
+            color: var(--trash-icon-color); /* Vermelho para lixeira */
             cursor: pointer;
-            font-size: 1.5rem; /* Aumenta tamanho do ícone */
+            font-size: 1.4rem; /* Aumenta tamanho do ícone */
             padding: 8px;
             border-radius: var(--macos-border-radius);
             width: auto;
@@ -394,10 +355,6 @@
             text-align: center;
             box-shadow: var(--macos-shadow);
             font-weight: 500;
-            display: flex; /* Para alinhar ícone e texto */
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         body.dark-mode .theme-toggle {
@@ -490,24 +447,29 @@
             font-weight: 700;
         }
 
-        /* Estilos para os ícones */
-        .fa-calendar-alt { color: var(--icon-color-primary); }
-        .fa-clock { color: var(--icon-color-secondary); }
-        .fa-hourglass-half { color: var(--icon-color-info); }
-        .fa-briefcase { color: var(--icon-color-success); } /* Mala colorida para Horas Trabalhadas */
-        .fa-exchange-alt { color: var(--icon-color-info); }
-        .fa-wallet { color: var(--icon-color-primary); }
-        .fa-plus-circle { color: white; } /* Ícone do botão primário */
-        .fa-file-excel { color: var(--text-color-light); } /* Ícone do botão secundário */
-        .fa-trash-alt { color: var(--icon-color-danger); } /* Lixeira colorida */
-        .fa-sun, .fa-moon { color: var(--text-color-light); } /* Ícones do tema */
-        body.dark-mode .fa-file-excel, body.dark-mode .fa-sun, body.dark-mode .fa-moon { color: var(--text-color-dark); }
+        /* Cores para ícones específicos */
+        .fa-calendar-alt { color: var(--primary-color); } /* Azul */
+        .fa-clock { color: var(--clock-icon-color); } /* Laranja */
+        .fa-hourglass-half { color: #8e8e93; } /* Cinza */
+        .fa-briefcase { color: var(--briefcase-icon-color); } /* Azul claro */
+        .fa-exchange-alt { color: #ffcc00; } /* Amarelo */
+        .fa-wallet { color: #34c759; } /* Verde */
+        .fa-plus-circle { color: white; } /* Branco no botão primário */
+        .fa-file-excel { color: var(--excel-icon-color); } /* Verde para Excel */
+        .fa-trash-alt { color: var(--trash-icon-color); } /* Vermelho para lixeira */
+        .fa-sun { color: #ffcc00; } /* Amarelo para sol */
+        .fa-moon { color: #8e8e93; } /* Cinza para lua */
+
+        /* Ajuste para ícones dentro de botões secundários no modo escuro */
+        body.dark-mode button.secondary .fa-file-excel { color: var(--excel-icon-color); }
+        body.dark-mode button.secondary .fa-trash-alt { color: var(--trash-icon-color); }
+        body.dark-mode button.secondary .fa-sun { color: var(--text-color-dark); } /* Cor do texto do botão */
+        body.dark-mode button.secondary .fa-moon { color: var(--text-color-dark); } /* Cor do texto do botão */
+
     </style>
 </head>
 <body>
-    <button id="themeToggle" class="theme-toggle">
-        <i class="fas fa-moon"></i> Modo Escuro
-    </button>
+    <button id="themeToggle" class="theme-toggle">Modo Escuro</button>
 
     <div class="container">
         <h1>Controle de Ponto Pessoal</h1>
@@ -544,8 +506,8 @@
 
         <div class="button-group">
             <button id="addEntryBtn" class="primary"><i class="fas fa-plus-circle"></i> Adicionar Registro</button>
-            <button id="generateExcelBtn" class="secondary"><i class="fas fa-file-excel"></i> Gerar Excel</button>
-            <button id="clearEntriesBtn" class="secondary"><i class="fas fa-trash-alt"></i> Limpar Todos</button>
+            <button id="generateExcelBtn" class="secondary"><i class="fas fa-file-excel" style="color: var(--excel-icon-color);"></i> Gerar Excel</button>
+            <button id="clearEntriesBtn" class="secondary"><i class="fas fa-trash-alt" style="color: var(--trash-icon-color);"></i> Limpar Todos</button>
         </div>
     </div>
 
@@ -670,21 +632,13 @@
                 entryCard.classList.add('entry-card');
                 entryCard.innerHTML = `
                     <div class="entry-info">
-                        <p><strong><i class="fas fa-calendar-alt"></i> Data:</strong> <span class="time-value">${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</span></p>
-                        <p class="time-pair">
-                            <span class="time-label"><i class="fas fa-clock"></i> Entrada Prevista:</span> <span class="time-value">${entry.entradaPrevista}</span>
-                            <span class="time-separator">|</span>
-                            <span class="time-label"><i class="fas fa-clock"></i> Saída Prevista:</span> <span class="time-value">${entry.saidaPrevista}</span>
-                        </p>
-                        <p class="time-pair">
-                            <span class="time-label"><i class="fas fa-clock"></i> Entrada Real:</span> <span class="time-value">${entry.entradaReal}</span>
-                            <span class="time-separator">|</span>
-                            <span class="time-label"><i class="fas fa-clock"></i> Saída Real:</span> <span class="time-value">${entry.saidaReal}</span>
-                        </p>
-                        <p><strong><i class="fas fa-hourglass-half"></i> Tolerância Aplicada:</strong> <span class="time-value">${editToleranceMinutes} min</span></p>
-                        <p><strong><i class="fas fa-briefcase"></i> Horas Trabalhadas (Dia):</strong> <span class="time-value">${entry.horasTrabalhadasDia}</span></p>
-                        <p><strong><i class="fas fa-exchange-alt"></i> Banco Dia:</strong> <span class="time-value ${horasDevidasExtrasDiaMin < 0 ? 'negative-balance' : (horasDevidasExtrasDiaMin > 0 ? 'positive-balance' : '')}">${entry.horasDevidasExtrasDia}</span></p>
-                        <p><strong><i class="fas fa-wallet"></i> Banco Acumulado:</strong> <span class="time-value ${totalBancoHorasAcumulado < 0 ? 'negative-balance' : (totalBancoHorasAcumulado > 0 ? 'positive-balance' : '')}">${entry.bancoHorasAcumulado}</span></p>
+                        <p><strong><i class="fas fa-calendar-alt"></i> Data:</strong> <span>${new Date(entry.data + 'T00:00:00').toLocaleDateString('pt-BR')}</span></p>
+                        <p><strong><i class="fas fa-clock"></i> Previsto:</strong> <span>${entry.entradaPrevista} - ${entry.saidaPrevista}</span></p>
+                        <p><strong><i class="fas fa-clock"></i> Real:</strong> <span>${entry.entradaReal} - ${entry.saidaReal}</span></p>
+                        <p><strong><i class="fas fa-hourglass-half"></i> Tolerância:</strong> <span>${editToleranceMinutes} min</span></p>
+                        <p><strong><i class="fas fa-briefcase"></i> Trabalhadas:</strong> <span>${entry.horasTrabalhadasDia}</span></p>
+                        <p><strong><i class="fas fa-exchange-alt"></i> Banco Dia:</strong> <span class="${horasDevidasExtrasDiaMin < 0 ? 'negative-balance' : (horasDevidasExtrasDiaMin > 0 ? 'positive-balance' : '')}">${entry.horasDevidasExtrasDia}</span></p>
+                        <p><strong><i class="fas fa-wallet"></i> Banco Acumulado:</strong> <span class="${totalBancoHorasAcumulado < 0 ? 'negative-balance' : (totalBancoHorasAcumulado > 0 ? 'positive-balance' : '')}">${entry.bancoHorasAcumulado}</span></p>
                     </div>
                     <div class="entry-actions">
                         <button data-index="${index}" aria-label="Remover registro"><i class="fas fa-trash-alt"></i></button>
